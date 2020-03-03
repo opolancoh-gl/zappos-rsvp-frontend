@@ -1,32 +1,123 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <Header />
+    <router-view />
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import Header from '@/components/Header.vue';
+
+export default {
+  components: {
+    Header,
+  },
+};
+</script>
+
+<style lang="scss">
+@import '~bootstrap/scss/bootstrap';
+
+.dropdown-toggle::after {
+  display: none;
 }
 
-#nav {
-  padding: 30px;
+.person-complete {
+  color: $secondary !important;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.person-incomplete {
+  color: $warning !important;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.person-missing-phone {
+  color: $danger !important;
+}
+
+.bg-purple {
+  background-color: purple !important;
+}
+
+.bg-danger-dark {
+  background-color: darken($primary, 10);
+}
+
+.text-purple {
+  color: purple !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.event-nav {
+  .fa-stack {
+    font-size: 3.4em;
+    height: 2em;
+    width: 2.15em;
+  }
+
+  .fa-stack-2x {
+    height: 2em;
+    width: 2.15em;
+  }
+
+  .fa-stack-1x {
+    height: 1em;
+    width: 1em;
+  }
+
+  .nav-label.fa-stack-1x {
+    height: auto;
+    width: inherit;
+  }
+
+  .nav-circle {
+    color: $primary;
+  }
+
+  .nav-icon {
+    margin-top: 20px;
+    font-size: 40px;
+    color: #fff;
+  }
+
+  .nav-label {
+    margin-top: 66px;
+    font-size: 12px;
+    color: #fff;
+  }
+}
+
+.event-nav ul,
+.event-nav ul li {
+  z-index: 2;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0;
+  margin: 0;
+}
+.event-nav ul li a.active .nav-circle,
+.event-nav ul li a:hover .nav-circle {
+  color: darken($primary, 10);
+  text-decoration: none;
+}
+
+.card {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+
+  .card-header {
+    color: white;
+    background-color: darken($primary, 5);
+
+    a,
+    a:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+
+.text-bold {
+  font-weight: 700;
 }
 </style>
