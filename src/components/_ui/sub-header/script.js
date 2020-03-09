@@ -1,4 +1,4 @@
-import SubHeaderWave from './SubHeaderWave.vue';
+import SubHeaderWave from '../Wave.vue';
 
 export default {
   name: 'SubHeader',

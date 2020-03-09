@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import SubHeader from '@/components/_shared/sub-header/SubHeader.vue';
+import SubHeader from '@/components/_ui/sub-header/SubHeader.vue';
 
 export default {
   name: 'SignIn',
