@@ -2,92 +2,154 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 // auth
-import SignIn from '@/components/auth/SignIn.vue';
-// events
-import EventPage from '@/components/events/EventPage.vue';
-import EventDetails from '@/components/events/details/Details.vue';
-import EventDetailsOverview from '@/components/events/details/DetailsOverview.vue';
-import EventDetailsAccess from '@/components/events/details/DetailsAccess.vue';
-import EventDetailsMessageCenter from '@/components/events/details/message-center/DetailsMessageCenter.vue';
-import EventDetailsAttendees from '@/components/events/details/DetailsAttendees.vue';
-import EventDetailsBlastCenter from '@/components/events/details/DetailsBlastCenter.vue';
+import SignIn from '@/components/auth/SignInPage.vue';
+import PasswordRecovery from '@/components/auth/PasswordRecoveryPage.vue';
 // users
-import UserPage from '@/components/users/UserPage.vue';
-import UserCreateEdit from '@/components/users/UserCreateEdit.vue';
+import UserList from '@/components/users/UserList.vue';
+import UserCreateUpdate from '@/components/users/create-update/UserCreateUpdate.vue';
 import UserDetails from '@/components/users/UserDetails.vue';
 // devices
-import DevicePage from '@/components/devices/DevicePage.vue';
-import DeviceCreateEdit from '@/components/devices/DeviceCreateEdit.vue';
+import DeviceList from '@/components/devices/DeviceList.vue';
+import DeviceCreateUpdate from '@/components/devices/DeviceCreateUpdate.vue';
 import DeviceDetails from '@/components/devices/DeviceDetails.vue';
+// events
+import EventList from '@/components/events/EventList.vue';
+import EventCreateUpdate from '@/components/events/create-update/EventCreateUpdate.vue';
+import EventDetails from '@/components/events/details/EventDetails.vue';
+import EventDetailsOverview from '@/components/events/details/EventDetailsOverview.vue';
+import EventDetailsAccess from '@/components/events/details/EventDetailsAccess.vue';
+import EventDetailsMessageCenter from '@/components/events/details/message-center/DetailsMessageCenter.vue';
+import EventDetailsAttendees from '@/components/events/details/EventDetailsAttendees.vue';
+import EventDetailsBlastCenter from '@/components/events/details/EventDetailsBlastCenter.vue';
 
 Vue.use(VueRouter);
+
+const routePaths = { user: '/users', device: '/devices', event: '/events' };
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: UserPage,
-  },
-  // events
-  {
-    path: '/events',
-    name: 'EventPage',
-    component: EventPage,
-  },
-  {
-    path: '/events/:id',
-    component: EventDetails,
-    children: [
-      { path: '', component: EventDetailsOverview },
-      { path: 'users', component: EventDetailsAccess },
-      { path: 'message-center', component: EventDetailsMessageCenter },
-      { path: 'attendees', component: EventDetailsAttendees },
-      { path: 'blast-center', component: EventDetailsBlastCenter },
-    ],
-  },
-  // users
-  {
-    path: '/users',
-    name: 'UserPage',
-    component: UserPage,
-  },
-  {
-    path: '/users/:id',
-    component: UserDetails,
-  },
-  {
-    path: '/users/:id/edit',
-    component: UserCreateEdit,
-  },
-  {
-    path: '/users/new',
-    component: UserCreateEdit,
-  },
-  // devices
-  {
-    path: '/devices',
-    name: 'DevicePage',
-    component: DevicePage,
-  },
-  {
-    path: '/devices/:id',
-    component: DeviceDetails,
-  },
-  {
-    path: '/devices/:id/edit',
-    component: DeviceCreateEdit,
-  },
-  {
-    path: '/devices/new',
-    component: DeviceCreateEdit,
+    component: UserList,
   },
   // auth
   {
-    path: '/sign_in',
+    path: '/signin',
     name: 'SignIn',
     component: SignIn,
   },
-  //
+  {
+    path: '/password-recovery',
+    name: 'PasswordRecovery',
+    component: PasswordRecovery,
+  },
+  // users
+  // user - list
+  {
+    path: `${routePaths.user}`,
+    name: 'UserList',
+    component: UserList,
+  },
+  // user - create
+  {
+    path: `${routePaths.user}/new`,
+    name: 'UserCreate',
+    component: UserCreateUpdate,
+  },
+  // user - details
+  {
+    path: `${routePaths.user}/:id(\\d+)`,
+    name: 'UserDetails',
+    component: UserDetails,
+    props: true,
+  },
+  // user - update
+  {
+    path: `${routePaths.user}/:id(\\d+)/edit`,
+    name: 'UserUpdate',
+    component: UserCreateUpdate,
+    props: true,
+  },
+  // devices
+  // device - list
+  {
+    path: `${routePaths.device}`,
+    name: 'DeviceList',
+    component: DeviceList,
+  },
+  // device - create
+  {
+    path: `${routePaths.device}/new`,
+    name: 'DeviceCreate',
+    component: DeviceCreateUpdate,
+  },
+  // device - details
+  {
+    path: `${routePaths.device}/:id(\\d+)`,
+    name: 'DeviceDetails',
+    component: DeviceDetails,
+    props: true,
+  },
+  // device - update
+  {
+    path: `${routePaths.device}/:id(\\d+)/edit`,
+    name: 'DeviceUpdate',
+    component: DeviceCreateUpdate,
+    props: true,
+  },
+  // events
+  // event - list
+  {
+    path: `${routePaths.event}`,
+    name: 'EventList',
+    component: EventList,
+  },
+  // event - create
+  {
+    path: `${routePaths.event}/new`,
+    name: 'EventCreate',
+    component: EventCreateUpdate,
+  },
+  // event - details
+  {
+    path: `${routePaths.event}/:id(\\d+)`,
+    component: EventDetails,
+    props: true,
+    children: [
+      {
+        path: '',
+        name: 'EventDetailsOverview',
+        component: EventDetailsOverview,
+      },
+      {
+        path: 'users',
+        name: 'EventDetailsAccess',
+        component: EventDetailsAccess,
+      },
+      {
+        path: 'message-center',
+        name: 'EventDetailsMessageCenter',
+        component: EventDetailsMessageCenter,
+      },
+      {
+        path: 'attendees',
+        name: 'EventDetailsAttendees',
+        component: EventDetailsAttendees,
+      },
+      {
+        path: 'blast-center',
+        name: 'EventDetailsBlastCenter',
+        component: EventDetailsBlastCenter,
+      },
+      {
+        path: 'edit',
+        name: 'EventUpdate',
+        component: EventCreateUpdate,
+        props: true,
+      },
+    ],
+  },
+  // info
   {
     path: '/about',
     name: 'About',

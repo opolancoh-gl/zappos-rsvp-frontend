@@ -4,16 +4,18 @@
       <div class="card-header d-flex justify-content-between">
         <div class="align-self-center">Event Details</div>
         <div>
-          <a class="btn btn-sm btn-primary" href="/events/1/edit">
+          <router-link
+            class="btn btn-sm btn-primary"
+            :to="{ name: 'EventUpdate', params: { id: 1 } }"
+          >
             <i class="far fa-edit mr-1"></i>
-            <!-- <i class="far fa-edit mr-1"></i> -->
             Edit
-          </a>
-          <a
+          </router-link>
+          <router-link
             class="btn btn-primary btn-sm ml-2"
             target="_blank"
-            href="http://localhost:3000/opt/eKxLUg"
-            >View Opt-In Page</a
+            to="http://localhost:3000/opt/eKxLUg"
+            >View Opt-In Page</router-link
           >
         </div>
       </div>
@@ -139,17 +141,8 @@
 
 <script>
 export default {
-  name: 'EventDetailsOverview',
   data() {
-    return {};
-  },
-  components: {},
-  mounted() {
-    /* axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then((response) => (this.info = response)); */
+    return { item: {} };
   },
 };
 </script>
-
-<style scoped></style>

@@ -552,7 +552,6 @@
 import { message } from './DetailsMessageCenterParams';
 
 export default {
-  name: 'EventDetailsMessageCenter',
   data() {
     return { message: {} };
   },

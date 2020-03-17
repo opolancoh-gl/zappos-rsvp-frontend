@@ -41,12 +41,6 @@
   </svg>
 </template>
 
-<script>
-export default {
-  name: 'Wave',
-};
-</script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .a {

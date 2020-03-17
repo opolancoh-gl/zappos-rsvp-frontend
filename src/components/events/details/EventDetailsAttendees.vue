@@ -141,7 +141,6 @@
 
 <script>
 export default {
-  name: 'EventDetailsAttendees',
   data() {
     return {};
   },

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <SubHeader :title="title" :subTitle="subTitle" />
+    <Header :title="title" :subTitle="subTitle" />
     <div class="container my-4">
       <div class="card">
-        <div class="card-header">New User</div>
+        <div class="card-header">{{ formTitle }}</div>
         <div class="card-body">
           <form class="simple_form new_user" id="new_user">
             <div class="form-group string required user_name">
@@ -99,8 +99,8 @@
                 }}</option>
               </select>
             </div>
-            <button class="btn btn-primary">Save</button>
-            <router-link class="btn" to="/users">Cancel</router-link>
+            <button class="btn btn-primary">{{ confirmButtonName }}</button>
+            <router-link class="btn" :to="{ name: 'UserList' }">Cancel</router-link>
           </form>
         </div>
       </div>
@@ -108,28 +108,4 @@
   </div>
 </template>
 
-<script>
-import SubHeader from '@/components/_ui/sub-header/SubHeader.vue';
-
-export default {
-  name: 'UserCreateEdit',
-  data() {
-    return {
-      title: 'Users',
-      subTitle: 'Total: 3',
-      accounts: [],
-    };
-  },
-  components: {
-    SubHeader,
-  },
-  mounted() {
-    /* axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then((response) => (this.info = response)); */
-    this.accounts.push({ name: 'Kuhn Inc', value: 1 });
-  },
-};
-</script>
-
-<style scoped></style>
+<script src="./user-create-update.js"></script>

@@ -1,56 +1,40 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-danger-dark">
+  <div class="header">
     <div class="container">
-      <router-link to="/" class="navbar-brand">Zappos RSVP</router-link>
-      <button
-        class="navbar-toggler"
-        data-target="#navbarContent"
-        data-toggle="collapse"
-        type="button"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/events">Events</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/users">Users</router-link>
-            <a class="nav-link" href="/users"></a>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/devices">Devices</router-link>
-          </li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              data-toggle="dropdown"
-              href="#"
-              id="user-dropdown"
-              role="button"
-            >Adam Admin</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" rel="nofollow" href="/sign_out">Sign Out</a>
-            </div>
-          </li>
-        </ul>
-      </div>
+      <slot>
+        <div class="row">
+          <div class="col text-center">
+            <HeaderTitle :title="title" :subTitle="subTitle" />
+          </div></div
+      ></slot>
     </div>
-  </nav>
+    <HeaderWave />
+  </div>
 </template>
 
 <script>
+import HeaderTitle from '@/components/_ui/HeaderTitle.vue';
+import HeaderWave from '@/components/_ui/HeaderWave.vue';
+
 export default {
-  name: 'Header',
   props: {
-    msg: String,
+    title: { type: String },
+    subTitle: { type: String },
+  },
+  components: {
+    HeaderTitle,
+    HeaderWave,
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+@import '~bootstrap/scss/bootstrap';
+
+.header {
+  position: relative;
+  padding: 4rem 0 6rem;
+  color: white;
+  background-color: $primary;
+}
 </style>
