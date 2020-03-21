@@ -17,7 +17,7 @@
                 <div class="media">
                   <i class="far fa-calendar-alt fa-2x ml-2 mr-4 text-primary align-self-center"></i>
                   <div class="media-body align-self-center">
-                    <router-link :to="{ name: 'EventDetailsOverview', params: { id: item.id } }">{{
+                    <router-link :to="{ name: 'EventOverview', params: { id: item.id } }">{{
                       item.name
                     }}</router-link>
                     <small class="d-block">{{ item.description }}</small>

@@ -16,11 +16,11 @@ import DeviceDetails from '@/components/devices/DeviceDetails.vue';
 import EventList from '@/components/events/EventList.vue';
 import EventCreateUpdate from '@/components/events/create-update/EventCreateUpdate.vue';
 import EventDetails from '@/components/events/details/EventDetails.vue';
-import EventDetailsOverview from '@/components/events/details/EventDetailsOverview.vue';
-import EventDetailsAccess from '@/components/events/details/EventDetailsAccess.vue';
-import EventDetailsMessageCenter from '@/components/events/details/message-center/DetailsMessageCenter.vue';
-import EventDetailsAttendees from '@/components/events/details/EventDetailsAttendees.vue';
-import EventDetailsBlastCenter from '@/components/events/details/EventDetailsBlastCenter.vue';
+import EventOverview from '@/components/events/details/EventOverview.vue';
+import EventAccess from '@/components/events/details/EventAccess.vue';
+import EventMessageCenter from '@/components/events/details/message-center/DetailsMessageCenter.vue';
+import EventAttendees from '@/components/events/details/EventAttendees.vue';
+import EventBlastCenter from '@/components/events/details/EventBlastCenter.vue';
 
 Vue.use(VueRouter);
 
@@ -118,28 +118,28 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'EventDetailsOverview',
-        component: EventDetailsOverview,
+        name: 'EventOverview',
+        component: EventOverview,
       },
       {
         path: 'users',
-        name: 'EventDetailsAccess',
-        component: EventDetailsAccess,
+        name: 'EventAccess',
+        component: EventAccess,
       },
       {
         path: 'message-center',
-        name: 'EventDetailsMessageCenter',
-        component: EventDetailsMessageCenter,
+        name: 'EventMessageCenter',
+        component: EventMessageCenter,
       },
       {
         path: 'attendees',
-        name: 'EventDetailsAttendees',
-        component: EventDetailsAttendees,
+        name: 'EventAttendees',
+        component: EventAttendees,
       },
       {
         path: 'blast-center',
-        name: 'EventDetailsBlastCenter',
-        component: EventDetailsBlastCenter,
+        name: 'EventBlastCenter',
+        component: EventBlastCenter,
       },
       {
         path: 'edit',

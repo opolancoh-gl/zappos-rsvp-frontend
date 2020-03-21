@@ -3,15 +3,15 @@
     <div class="card-header d-flex justify-content-between">
       <div class="align-self-center">Blasts</div>
       <div>
-        <a class="btn btn-sm btn-primary mr-2" href="/events/1/invite/blasts/new"
-          ><!-- <i class="far fa-plus mr-1"></i> -->Invite</a
-        ><a class="btn btn-sm btn-primary mr-2" href="/events/1/ticket/blasts/new">
+        <a class="btn btn-sm btn-primary mr-2" href="/events/1/invite/blasts/new">Invite</a>
+        <a class="btn btn-sm btn-primary mr-2" href="/events/1/ticket/blasts/new">
           <i class="fas fa-plus mr-1"></i>
-          <!-- <i class="far fa-plus mr-1"></i> -->Ticket</a
-        ><a class="btn btn-sm btn-primary" href="/events/1/text_message/blasts/new">
+          Ticket
+        </a>
+        <a class="btn btn-sm btn-primary" href="/events/1/text_message/blasts/new">
           <i class="fas fa-plus mr-1"></i>
-          <!-- <i class="far fa-plus mr-1"></i> -->Text Message</a
-        >
+          Text Message
+        </a>
       </div>
     </div>
     <div class="list-group list-group-flush">
@@ -20,7 +20,6 @@
           <div class="col align-self-center">
             <div class="media">
               <i class="far fa-share-square fa-2x ml-2 mr-4 text-muted align-self-center"></i>
-
               <div class="media-body align-self-center">
                 First Ticket Blast<small class="d-block">Ticket Blast: To Confirmed</small>
               </div>
@@ -35,7 +34,6 @@
           <div class="col align-self-center">
             <div class="media">
               <i class="far fa-share-square fa-2x ml-2 mr-4 text-muted align-self-center"></i>
-
               <div class="media-body align-self-center">
                 Final Ticket Blast<small class="d-block">Ticket Blast: To Confirmed</small>
               </div>

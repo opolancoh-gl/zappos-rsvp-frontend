@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Header :title="title" :subTitle="subTitle" />
+    <Header
+      :title="item.name"
+      :subTitle="'[to be implemented] Oversees 0 people across 0 brands'"
+    />
     <div class="container my-4">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
@@ -22,8 +25,8 @@
             </div>
             <div class="col">
               <strong class="d-block">Account:</strong>
-              <router-link :to="`/accounts/${item.account.id}`">{{
-                item.account.name
+              <router-link :to="item.account ? `/accounts/${item.account.id}` : ''">{{
+                item.account ? item.account.name : ''
               }}</router-link>
             </div>
           </div>
@@ -35,26 +38,20 @@
 
 <script>
 import Header from '@/components/_ui/Header.vue';
-import store from '@/store/data';
+import { mapState } from 'vuex';
 
 export default {
   props: {
     id: { type: [String, Number], required: true },
   },
-  data() {
-    return {
-      title: null,
-      subTitle: null,
-      item: {},
-    };
-  },
   components: {
     Header,
   },
   created() {
-    this.item = store.getUser(this.id);
-    this.title = this.item.name;
-    this.subTitle = 'Oversees 0 people across 0 brands';
+    this.$store.dispatch('user/fetchUserById', this.id);
+  },
+  computed: {
+    ...mapState('user', { item: (state) => state.user }),
   },
 };
 </script>

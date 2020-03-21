@@ -44,27 +44,27 @@
 
 <script>
 import Header from '@/components/_ui/Header.vue';
-import store from '@/store/data';
+
+import { mapState } from 'vuex';
 
 export default {
-  data() {
-    return {
-      items: [],
-    };
-  },
   components: {
     Header,
   },
   created() {
-    this.items = store.users;
+    this.$store.dispatch('user/fetchUsers');
   },
   computed: {
     title() {
       return 'Users';
     },
     subTitle() {
-      return `Total: ${store.users.length}`;
+      return `Total: ${this.itemsCount}`;
     },
+    ...mapState('user', {
+      items: (state) => state.users,
+      itemsCount: (state) => state.usersCount,
+    }),
   },
 };
 </script>

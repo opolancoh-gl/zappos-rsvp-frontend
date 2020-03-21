@@ -9,19 +9,19 @@
     <div class="col text-center d-flex justify-content-end">
       <ul class="nav nav-tabs align-items-center">
         <li class="nav-item">
-          <router-link class="fa-stack" :to="{ name: 'EventDetailsOverview', params: { id } }">
+          <router-link class="fa-stack" :to="{ name: 'EventOverview', params: { id } }">
             <i class="fas fa-home fa-stack-1x fa-fw nav-icon"></i>
             <strong class="fa-stack-1x nav-label">OVERVIEW</strong>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="fa-stack" :to="{ name: 'EventDetailsAccess', params: { id } }">
+          <router-link class="fa-stack" :to="{ name: 'EventAccess', params: { id } }">
             <i class="fas fa-lock fa-stack-1x fa-fw nav-icon"></i>
             <strong class="fa-stack-1x nav-label">ACCESS</strong>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="fa-stack" :to="{ name: 'EventDetailsMessageCenter', params: { id } }">
+          <router-link class="fa-stack" :to="{ name: 'EventMessageCenter', params: { id } }">
             <i class="fas fa-comment-alt fa-stack-1x fa-fw nav-icon"></i>
             <strong class="fa-stack-1x nav-label">
               MESSAGE
@@ -30,13 +30,13 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="fa-stack" :to="{ name: 'EventDetailsAttendees', params: { id } }">
+          <router-link class="fa-stack" :to="{ name: 'EventAttendees', params: { id } }">
             <i class="fas fa-user fa-stack-1x fa-fw nav-icon"></i>
             <strong class="fa-stack-1x nav-label">ATTENDEES</strong>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="fa-stack" :to="{ name: 'EventDetailsBlastCenter', params: { id } }">
+          <router-link class="fa-stack" :to="{ name: 'EventBlastCenter', params: { id } }">
             <i class="fas fa-rocket fa-stack-1x fa-fw nav-icon"></i>
             <strong class="fa-stack-1x nav-label">
               BLAST
