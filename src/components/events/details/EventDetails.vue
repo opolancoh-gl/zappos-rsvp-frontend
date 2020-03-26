@@ -1,7 +1,12 @@
 <template>
   <div>
     <Header>
-      <HeaderContent :name="name" :date="date" :location="location" :id="id" />
+      <HeaderContent
+        :title="title"
+        :subTitle1="subTitle1"
+        :subTitle2="subTitle2"
+        :navItems="navItems"
+      />
     </Header>
     <div class="container my-4">
       <router-view></router-view>
@@ -21,9 +26,9 @@ export default {
   },
   data() {
     return {
-      name: null,
-      date: null,
-      location: null,
+      title: null,
+      subTitle1: null,
+      subTitle2: null,
     };
   },
   components: {
@@ -33,9 +38,40 @@ export default {
   created() {
     const item = store.getEvent(this.id);
 
-    this.name = item.name;
-    this.date = item.startDate;
-    this.location = item.city;
+    this.title = item.name;
+    this.subTitle1 = this.$options.filters.datetimeAtShort(item.startDate);
+    this.subTitle2 = item.city;
+  },
+  computed: {
+    navItems() {
+      return [
+        {
+          title: 'Overview',
+          icon: 'fa-home',
+          targetRoute: { name: 'EventOverview', params: { id: this.id } },
+        },
+        {
+          title: 'Access',
+          icon: 'fa-lock',
+          targetRoute: { name: 'EventAccess', params: { id: this.id } },
+        },
+        {
+          title: 'Message Center',
+          icon: 'fa-comment-alt',
+          targetRoute: { name: 'EventMessageCenter', params: { id: this.id } },
+        },
+        {
+          title: 'Attendees',
+          icon: 'fa-user',
+          targetRoute: { name: 'EventAttendees', params: { id: this.id } },
+        },
+        {
+          title: 'Blast Center',
+          icon: 'fa-rocket',
+          targetRoute: { name: 'EventBlastCenter', params: { id: this.id } },
+        },
+      ];
+    },
   },
 };
 </script>

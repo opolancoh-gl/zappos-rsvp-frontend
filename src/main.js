@@ -16,9 +16,8 @@ import DateFilter from './filters/date-filter';
 import TextFilter from './filters/text-filter';
 
 // utils
-import $app from './utils/app';
-import $helpers from './utils/helpers';
-import $validation from './utils/validation';
+import $appUtils from './utils/app-utils';
+import $textUtils from './utils/text-utils';
 
 // add filters
 DateFilter.forEach((item) => Vue.filter(item.name, item.f));
@@ -26,9 +25,8 @@ TextFilter.forEach((item) => Vue.filter(item.name, item.f));
 
 // add instance properties
 Vue.config.productionTip = false;
-Vue.prototype.$_app = $app;
-Vue.prototype.$_helpers = $helpers;
-Vue.prototype.$_validation = $validation;
+Vue.prototype.$_app = $appUtils;
+Vue.prototype.$_textUtils = $textUtils;
 
 new Vue({
   router,

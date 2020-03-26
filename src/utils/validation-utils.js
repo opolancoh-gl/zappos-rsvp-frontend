@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-escape */
-// useful code to be added to Vue instance properties
 
 export default Object.freeze({
   objectIdRegExp: /^[0-9a-fA-F]{24}$/,

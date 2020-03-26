@@ -4,9 +4,10 @@
       <slot>
         <div class="row">
           <div class="col text-center">
-            <HeaderTitle :title="title" :subTitle="subTitle" />
-          </div></div
-      ></slot>
+            <HeaderTitle :title="title || '...'" :subTitle="subTitle" />
+          </div>
+        </div>
+      </slot>
     </div>
     <HeaderWave />
   </div>

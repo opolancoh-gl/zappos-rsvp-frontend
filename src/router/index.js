@@ -6,8 +6,8 @@ import SignIn from '@/components/auth/SignInPage.vue';
 import PasswordRecovery from '@/components/auth/PasswordRecoveryPage.vue';
 // users
 import UserList from '@/components/users/UserList.vue';
-import UserCreateUpdate from '@/components/users/create-update/UserCreateUpdate.vue';
 import UserDetails from '@/components/users/UserDetails.vue';
+import UserCreateUpdate from '@/components/users/UserCreateUpdate.vue';
 // devices
 import DeviceList from '@/components/devices/DeviceList.vue';
 import DeviceCreateUpdate from '@/components/devices/DeviceCreateUpdate.vue';

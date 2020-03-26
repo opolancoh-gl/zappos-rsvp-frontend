@@ -61,7 +61,7 @@ export default [
   },
   {
     // Feb 25, 2020 at 09:00 AM
-    name: 'dateTimeAtShort',
+    name: 'datetimeAtShort',
     f: (value) => {
       const date = new Date(value);
       const dateOnly = date.toLocaleString(['en-US'], {

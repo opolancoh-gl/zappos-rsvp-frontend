@@ -1,6 +1,6 @@
 import http from './http-service';
 
-const serviceRoute = '/users';
+const serviceRoute = '/accounts';
 
 export default {
   async getAll(/* page, limit */) {

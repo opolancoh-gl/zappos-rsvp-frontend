@@ -1,16 +1,29 @@
 <template>
   <div id="app">
     <NavBar />
-    <router-view />
+    <Header :title="title" :subTitle="subTitle" />
+    <div class="container my-4">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/_ui/NavBar.vue';
+import Header from '@/components/_ui/Header.vue';
 
 export default {
   components: {
     NavBar,
+    Header,
+  },
+  computed: {
+    title() {
+      return this.$store.state.headerTitle;
+    },
+    subTitle() {
+      return this.$store.state.headerSubTitle;
+    },
   },
 };
 </script>
