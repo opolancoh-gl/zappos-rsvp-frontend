@@ -18,7 +18,7 @@
 import Header from '@/components/_ui/Header.vue';
 import store from '@/store/data';
 
-import HeaderContent from './EventDetailsHeader.vue';
+import HeaderContent from '@/components/_ui/HeaderContentNav.vue';
 
 export default {
   props: {
