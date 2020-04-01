@@ -43,8 +43,12 @@ export default {
   data() {
     return { items: [], itemsCount: '' };
   },
-  created() {
-    this.loadUsers();
+  mounted() {
+    this.$store.dispatch('application/setHeaderInfo', {
+      title: 'Users',
+      subtitle: '',
+    });
+    // this.loadUsers();
   },
   computed: {},
   methods: {

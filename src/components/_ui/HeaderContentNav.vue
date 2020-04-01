@@ -12,7 +12,8 @@
           <router-link class="fa-stack" :to="item.targetRoute">
             <i class="fas fa-stack-1x fa-fw nav-icon" :class="item.icon"></i>
             <strong class="fa-stack-1x nav-label">{{ item.title | upperCase }}</strong>
-            <!-- <strong class="fa-stack-1x nav-label"><span v-html="item.title"></span></strong> -->
+            <!-- <strong class="fa-stack-1x nav-label"><span v-html="item.title">
+            </span></strong>-->
           </router-link>
         </li>
       </ul>

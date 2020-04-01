@@ -29,7 +29,7 @@
 
 <script>
 import Header from '@/components/_ui/Header.vue';
-import store from '@/store/data';
+// import store from '@/store/data';
 
 export default {
   props: {
@@ -49,6 +49,7 @@ export default {
     Header,
   },
   created() {
+    /*
     if (this.isEditMode) {
       this.item = store.getUser(this.id);
 
@@ -64,6 +65,7 @@ export default {
     }
     this.events = store.events;
     this.events.unshift({ name: 'No Event', id: 0 });
+    */
   },
   computed: {
     isEditMode() {

@@ -1,5 +1,4 @@
 import Header from '@/components/_ui/Header.vue';
-import store from '@/store/data';
 
 export default {
   props: {
@@ -19,6 +18,7 @@ export default {
     Header,
   },
   created() {
+    /*
     if (this.isEditMode) {
       this.item = store.getEvent(this.id);
 
@@ -34,6 +34,7 @@ export default {
     }
 
     this.accounts.push({ name: 'Kuhn Inc', value: 1 });
+    */
   },
   computed: {
     isEditMode() {

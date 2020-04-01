@@ -10,6 +10,9 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-shadow': 0,
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'import/prefer-default-export': 0,
   },
   overrides: [
     {

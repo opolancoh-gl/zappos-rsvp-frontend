@@ -4,6 +4,17 @@
       <div class="sign-in" id="clearance">
         <div class="form-signin">
           <div novalidate="novalidate" class="simple_form session" method="post">
+            <input type="hidden" value="✓" />
+            <input type="hidden" name="authenticity_token" />
+            <div class="form-group email required session_email mb-3">
+              <input
+                class="form-control string email required form-control-lg"
+                placeholder="User name"
+                type="User name"
+                id="session_username"
+                v-model="username"
+              />
+            </div>
             <div class="form-group email required session_email mb-3">
               <input
                 class="form-control string email required form-control-lg"
@@ -22,19 +33,23 @@
                 v-model="password"
               />
             </div>
+            <div class="form-group password required session_password mb-3">
+              <input
+                class="form-control password required form-control-lg"
+                placeholder="Confirm Password"
+                type="password"
+                id="session_password_confirm"
+                v-model="password_confirm"
+              />
+            </div>
             <button
-              @click="logIn"
+              @click="register"
               class="btn btn-primary btn btn-lg btn-primary btn-block"
-              data-disable-with="Sign in"
-            >Sign in</button>
+              data-disable-with="Sign Up"
+            >Sign Up</button>
           </div>
           <div class="forgot-btn">
-            <div>
-              <a href="/passwords/new">Forgot password?</a>
-            </div>
-            <div>
-              <a href="/signup">Sign up</a>
-            </div>
+            <a href="/signin">I have an account</a>
           </div>
         </div>
       </div>
@@ -46,29 +61,39 @@
 export default {
   data() {
     return {
-      email: 'oscar.granada@gmail.com',
-      password: 'samplepass',
+      username: '',
+      email: '',
+      password: '',
+      password_confirm: '',
     };
   },
   components: {},
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', { title: 'Sign In' });
+    this.$store.dispatch('application/setHeaderInfo', { title: 'Sign Up' });
   },
   methods: {
     cleanData() {
+      this.username = '';
       this.email = '';
       this.password = '';
+      this.password_confirm = '';
     },
-    async logIn() {
-      const resp = await this.$store.dispatch('logIn', {
-        email: this.email,
-        password: this.password,
-      });
-      if (resp) {
-        this.cleanData();
-        this.$router.push('/');
+    register() {
+      if (this.password && this.password_confirm) {
+        if (this.password_confirm === this.password) {
+          this.$store.dispatch('addNewUser', {
+            username: this.username,
+            email: this.email,
+            password: this.password,
+          }).then(() => {
+            this.cleanData();
+            alert('Registration OK');
+          });
+        } else {
+          alert('Passwords are not matching.');
+        }
       } else {
-        alert('Auth failed');
+        alert('empty fields.');
       }
     },
   },

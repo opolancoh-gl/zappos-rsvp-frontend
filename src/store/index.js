@@ -1,26 +1,37 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import * as application from '@/store/modules/application';
 import * as user from '@/store/modules/user';
+
+import { DataProvider } from './data-provider';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    headerTitle: '',
-    headerSubTitle: '',
-  },
-  mutations: {
-    SET_HEADER_TITLE(state, { title, subTitle }) {
-      state.headerTitle = title;
-      state.headerSubTitle = subTitle;
-    },
-  },
+  state: {},
+  mutations: {},
   actions: {
-    setHeaderTitle({ commit }, payload) {
-      commit('SET_HEADER_TITLE', payload);
+    async addNewUser(_state, data) {
+      const resp = await DataProvider.getInstance().post('/auth/sign-up', data);
+      console.log(resp);
+      return resp.data;
+    },
+    async logIn({ commit }, data) {
+      try {
+        const resp = await DataProvider.getInstance().post('/auth/login', data);
+        if (resp.status === 200) {
+          const info = resp.data.data;
+          commit('application/SET_AUTH_TOKEN', info.token);
+          return true;
+        }
+        return false;
+      } catch (error) {
+        return false;
+      }
     },
   },
   modules: {
+    application,
     user,
   },
 });

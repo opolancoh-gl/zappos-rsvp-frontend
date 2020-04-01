@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 // auth
 import SignIn from '@/components/auth/SignInPage.vue';
 import PasswordRecovery from '@/components/auth/PasswordRecoveryPage.vue';
+import SignUp from '@/components/auth/SignUp.vue';
 // users
 import UserList from '@/components/users/UserList.vue';
 import UserDetails from '@/components/users/UserDetails.vue';
@@ -31,17 +32,42 @@ const routes = [
     path: '/',
     name: 'Home',
     component: UserList,
+    meta: {
+      auth: true,
+    },
   },
   // auth
   {
     path: '/signin',
     name: 'SignIn',
     component: SignIn,
+    meta: {
+      auth: false,
+    },
   },
   {
     path: '/password-recovery',
     name: 'PasswordRecovery',
     component: PasswordRecovery,
+    meta: {
+      auth: false,
+    },
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: SignUp,
+    meta: {
+      auth: false,
+    },
+  },
+  {
+    path: '/signout',
+    name: 'SignOut',
+    component: SignIn,
+    meta: {
+      auth: false,
+    },
   },
   // users
   // user - list
@@ -49,18 +75,27 @@ const routes = [
     path: `${routePaths.user}`,
     name: 'UserList',
     component: UserList,
+    meta: {
+      auth: true,
+    },
   },
   // user - create
   {
     path: `${routePaths.user}/new`,
     name: 'UserCreate',
     component: UserCreateUpdate,
+    meta: {
+      auth: true,
+    },
   },
   // user - details
   {
     path: `${routePaths.user}/:id(\\d+)`,
     name: 'UserDetails',
     component: UserDetails,
+    meta: {
+      auth: true,
+    },
     props: true,
   },
   // user - update
@@ -68,6 +103,9 @@ const routes = [
     path: `${routePaths.user}/:id(\\d+)/edit`,
     name: 'UserUpdate',
     component: UserCreateUpdate,
+    meta: {
+      auth: false,
+    },
     props: true,
   },
   // devices
@@ -76,18 +114,27 @@ const routes = [
     path: `${routePaths.device}`,
     name: 'DeviceList',
     component: DeviceList,
+    meta: {
+      auth: false,
+    },
   },
   // device - create
   {
     path: `${routePaths.device}/new`,
     name: 'DeviceCreate',
     component: DeviceCreateUpdate,
+    meta: {
+      auth: false,
+    },
   },
   // device - details
   {
     path: `${routePaths.device}/:id(\\d+)`,
     name: 'DeviceDetails',
     component: DeviceDetails,
+    meta: {
+      auth: false,
+    },
     props: true,
   },
   // device - update
@@ -95,6 +142,9 @@ const routes = [
     path: `${routePaths.device}/:id(\\d+)/edit`,
     name: 'DeviceUpdate',
     component: DeviceCreateUpdate,
+    meta: {
+      auth: false,
+    },
     props: true,
   },
   // events
@@ -103,48 +153,75 @@ const routes = [
     path: `${routePaths.event}`,
     name: 'EventList',
     component: EventList,
+    meta: {
+      auth: false,
+    },
   },
   // event - create
   {
     path: `${routePaths.event}/new`,
     name: 'EventCreate',
     component: EventCreateUpdate,
+    meta: {
+      auth: false,
+    },
   },
   // event - details
   {
     path: `${routePaths.event}/:id(\\d+)`,
     component: EventDetails,
+    meta: {
+      auth: false,
+    },
     props: true,
     children: [
       {
         path: '',
         name: 'EventOverview',
         component: EventOverview,
+        meta: {
+          auth: false,
+        },
       },
       {
         path: 'users',
         name: 'EventAccess',
         component: EventAccess,
+        meta: {
+          auth: false,
+        },
       },
       {
         path: 'message-center',
         name: 'EventMessageCenter',
         component: EventMessageCenter,
+        meta: {
+          auth: false,
+        },
       },
       {
         path: 'attendees',
         name: 'EventAttendees',
         component: EventAttendees,
+        meta: {
+          auth: false,
+        },
       },
       {
         path: 'blast-center',
         name: 'EventBlastCenter',
         component: EventBlastCenter,
+        meta: {
+          auth: false,
+        },
       },
       {
         path: 'edit',
         name: 'EventUpdate',
         component: EventCreateUpdate,
+        meta: {
+          auth: false,
+        },
         props: true,
       },
     ],
@@ -157,6 +234,9 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    meta: {
+      auth: false,
+    },
   },
 ];
 
@@ -164,6 +244,22 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, _from, next) => {
+  const SIGNIN = '/signin';
+  if (to.path === SIGNIN) {
+    return next();
+  }
+  const loggedIn = window.$app && window.$app.loggedIn;
+  const reqLogin = to.meta && to.meta.auth;
+  if (!reqLogin) {
+    return next();
+  }
+  if (!loggedIn) {
+    return next({ path: SIGNIN });
+  }
+  return next();
 });
 
 export default router;

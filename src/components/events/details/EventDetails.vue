@@ -16,7 +16,6 @@
 
 <script>
 import Header from '@/components/_ui/Header.vue';
-import store from '@/store/data';
 
 import HeaderContent from '@/components/_ui/HeaderContentNav.vue';
 
@@ -36,11 +35,13 @@ export default {
     HeaderContent,
   },
   created() {
+    /*
     const item = store.getEvent(this.id);
 
     this.title = item.name;
     this.subTitle1 = this.$options.filters.datetimeAtShort(item.startDate);
     this.subTitle2 = item.city;
+    */
   },
   computed: {
     navItems() {
