@@ -90,7 +90,7 @@ const routes = [
   },
   // user - details
   {
-    path: `${routePaths.user}/:id(\\d+)`,
+    path: `${routePaths.user}/:id(\\w+)`,
     name: 'UserDetails',
     component: UserDetails,
     meta: {
@@ -100,7 +100,7 @@ const routes = [
   },
   // user - update
   {
-    path: `${routePaths.user}/:id(\\d+)/edit`,
+    path: `${routePaths.user}/:id(\\w+)/edit`,
     name: 'UserUpdate',
     component: UserCreateUpdate,
     meta: {
@@ -115,7 +115,7 @@ const routes = [
     name: 'DeviceList',
     component: DeviceList,
     meta: {
-      auth: false,
+      auth: true,
     },
   },
   // device - create
@@ -246,18 +246,28 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach(async (to, from, next) => {
   const SIGNIN = '/signin';
+  const reqLogin = to.meta && to.meta.auth;
+  const loggedIn = await window.$app.isLoggedIn();
+  if (loggedIn && to.query && to.query.next && to.query.next !== to.path) {
+    return next({
+      path: to.query.next,
+    });
+  }
   if (to.path === SIGNIN) {
     return next();
   }
-  const loggedIn = window.$app && window.$app.loggedIn;
-  const reqLogin = to.meta && to.meta.auth;
   if (!reqLogin) {
     return next();
   }
+  if (loggedIn && from.query && from.query.next && from.query.next !== to.path) {
+    return next({
+      path: from.query.next,
+    });
+  }
   if (!loggedIn) {
-    return next({ path: SIGNIN });
+    return next({ path: `${SIGNIN}?next=${to.path}` });
   }
   return next();
 });

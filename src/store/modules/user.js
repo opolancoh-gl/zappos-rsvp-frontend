@@ -1,19 +1,26 @@
+import { DataProvider } from '../data-provider';
+
 export const namespaced = true;
 
 export const state = {
-  usersCount: 0,
+  items: [],
 };
 
 export const mutations = {
-  SET_USERS_COUNT(state, payload) {
-    state.usersCount = payload;
+  UPDATE_USERS_LIST(state, users) {
+    state.items = users;
   },
 };
 
 export const actions = {
-  async setUsersCoount({ commit }, value) {
-    commit('SET_USERS_COUNT', value);
+  async updateItems({ commit }) {
+    const users = await DataProvider.getInstance().getUsers();
+    commit('UPDATE_USERS_LIST', users);
   },
 };
 
-export const getters = {};
+export const getters = {
+  getUsers({ items }) {
+    return items;
+  },
+};

@@ -1,3 +1,4 @@
+import { DataProvider } from '../data-provider';
 
 const HEADER_TITLE = 'Zappos';
 const HEADER_SUBTITLE = '...';
@@ -7,7 +8,6 @@ export const namespaced = true;
 export const state = {
   headerTitle: HEADER_TITLE,
   headerSubtitle: HEADER_SUBTITLE,
-  authToken: window.localStorage.getItem('tkn') || '',
   isAuthenticated: false,
 };
 
@@ -20,15 +20,12 @@ export const mutations = {
   },
   SET_AUTH_TOKEN(state, info) {
     window.localStorage.setItem('tkn', info);
-    window.$app.loggedIn = true;
+    DataProvider.getInstance().login(info);
     state.isAuthenticated = true;
-    state.authToken = info;
   },
   SIGN_OUT(state) {
     window.localStorage.setItem('tkn', '');
-    window.$app.loggedIn = false;
     state.isAuthenticated = false;
-    state.authToken = null;
     state.headerTitle = HEADER_TITLE;
     state.headerSubtitle = HEADER_SUBTITLE;
   },
@@ -52,3 +49,10 @@ export const actions = {
 };
 
 export const getters = {};
+
+async function initializeAppStore(state) {
+  window.$app.setLogInVerifier(() => DataProvider.getInstance().verifySession());
+  state.isAuthenticated = await DataProvider.getInstance().verifySession();
+}
+
+initializeAppStore(state);

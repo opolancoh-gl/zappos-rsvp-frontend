@@ -2,7 +2,7 @@
   <div>
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between">
-        <div class="align-self-center">{{ title }}</div>
+        <div class="align-self-center">Events</div>
         <router-link class="btn btn-sm btn-primary" :to="{ name: 'EventCreate' }">
           <i class="fas fa-plus mr-2"></i>
           Add

@@ -1,3 +1,5 @@
+import './utils/bootstraping';
+
 import 'bootstrap/dist/css/bootstrap-reboot.min.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
