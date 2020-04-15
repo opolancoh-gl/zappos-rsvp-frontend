@@ -10,7 +10,10 @@
       "permImportEventUsers": true,
       "permCrudDevices": true,
       "permAssignDevices": true,
-      "account": { "id": 100, "name": "Kuhn Inc" }
+      "account": {
+        "id": 100,
+        "name": "Kuhn Inc"
+      }
     },
     {
       "id": 1,
@@ -22,7 +25,10 @@
       "permImportEventUsers": true,
       "permCrudDevices": true,
       "permAssignDevices": true,
-      "account": { "id": 101, "name": "Ocean Inc" }
+      "account": {
+        "id": 101,
+        "name": "Ocean Inc"
+      }
     },
     {
       "id": 2,
@@ -34,7 +40,10 @@
       "permImportEventUsers": false,
       "permCrudDevices": false,
       "permAssignDevices": true,
-      "account": { "id": 102, "name": "Amazon Inc" }
+      "account": {
+        "id": 102,
+        "name": "Amazon Inc"
+      }
     },
     {
       "id": 3,
@@ -46,30 +55,76 @@
       "permImportEventUsers": true,
       "permCrudDevices": true,
       "permAssignDevices": false,
-      "account": { "id": 103, "name": "Gorilla Inc" }
+      "account": {
+        "id": 103,
+        "name": "Gorilla Inc"
+      }
     }
   ],
   "accounts": [
-    { "id": 100, "name": "Kuhn Inc" },
-    { "id": 101, "name": "Ocean Inc" },
-    { "id": 102, "name": "Amazon Inc" },
-    { "id": 103, "name": "Gorilla Inc" }
+    {
+      "id": 100,
+      "name": "Kuhn Inc"
+    },
+    {
+      "id": 101,
+      "name": "Ocean Inc"
+    },
+    {
+      "id": 102,
+      "name": "Amazon Inc"
+    },
+    {
+      "id": 103,
+      "name": "Gorilla Inc"
+    }
   ],
   "devices": [
     {
-      "id": 1,
-      "name": "Device 1",
-      "description": "Description for #1"
+      "id": "a2ae6560-7e97-11ea-842c-9b323188f240",
+      "label": "Device 1",
+      "event": {
+        "id": "a2ae64e8-7e97-11ea-842a-e78a72fb4819",
+        "name": "Event 3"
+      }
     },
     {
-      "id": 2,
-      "name": "Device 2",
-      "description": "Description for #2"
+      "id": "a2ae659c-7e97-11ea-842d-2bf1d14a4f97",
+      "label": "Device 2"
     },
     {
-      "id": 3,
-      "name": "Device 3",
-      "description": "Description for #3"
+      "id": "a2ae65d8-7e97-11ea-842e-c79c610bec30",
+      "label": "Device 3",
+      "event": {
+        "id": "a2ae6524-7e97-11ea-842b-07319107ed98",
+        "name": "Event 4"
+      }
+    },
+    {
+      "label": "Device 4",
+      "event": {
+        "id": "a2ae6524-7e97-11ea-842b-07319107ed98",
+        "name": "Event 4"
+      },
+      "id": "JOQpJaM"
+    }
+  ],
+  "events": [
+    {
+      "id": "a2ae62ea-7e97-11ea-8428-7bb5bfe9dc60",
+      "name": "Event 1"
+    },
+    {
+      "id": "a2ae64a2-7e97-11ea-8429-77a8350aed6d",
+      "name": "Event 2"
+    },
+    {
+      "id": "a2ae64e8-7e97-11ea-842a-e78a72fb4819",
+      "name": "Event 3"
+    },
+    {
+      "id": "a2ae6524-7e97-11ea-842b-07319107ed98",
+      "name": "Event 4"
     }
   ]
 }

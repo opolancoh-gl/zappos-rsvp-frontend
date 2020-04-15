@@ -1,13 +1,8 @@
 <template>
   <div>
     <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between">
-        <div class="align-self-center">Events</div>
-        <router-link class="btn btn-sm btn-primary" :to="{ name: 'EventCreate' }">
-          <i class="fas fa-plus mr-2"></i>
-          Add
-        </router-link>
-      </div>
+      <TableHead :name="title" :links="tableHeadLinks" />
+      <TableBodyNoData v-if="items.length === 0" />
       <div class="list-group list-group-flush">
         <div class="list-group-item" v-for="item in items" :key="item.id">
           <div class="row">
@@ -16,9 +11,7 @@
                 <i class="far fa-calendar-alt fa-2x ml-2 mr-4 text-primary align-self-center"></i>
                 <div class="media-body align-self-center">
                   <router-link :to="{ name: 'EventOverview', params: { id: item.id } }">
-                    {{
-                    item.name
-                    }}
+                    {{ item.name }}
                   </router-link>
                   <small class="d-block">{{ item.description }}</small>
                 </div>
@@ -45,20 +38,45 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+import TableHead from '@/components/_ui/TableHead.vue';
+import TableBodyNoData from '@/components/_ui/TableBodyNoData.vue';
+
 export default {
+  name: 'EventList',
+  components: { TableHead, TableBodyNoData },
   data() {
     return {
-      items: [],
+      title: 'Events',
+      tableHeadLinks: [
+        {
+          name: 'Add',
+          routeName: 'EventCreate',
+          class: 'btn-primary',
+          icon: 'fa-plus',
+        },
+      ],
     };
   },
-  // created() {
-  //   this.items = store.events;
-  // },
-  mounted() {
-    this.$store.dispatch('application/setHeaderInfo', {
-      title: 'Events',
-      subtitle: 'Total: 0',
-    });
+  created() {
+    this.setCurrentHeader('...');
+    this.fetchItems().then(() => this.setCurrentHeader(`Total: ${this.itemsTotal}`));
+  },
+  computed: {
+    ...mapState('event', {
+      items: (state) => state.items,
+      itemsTotal: (state) => state.itemsTotal,
+      resourceName: (state) => state.resourceName,
+    }),
+  },
+  methods: {
+    setCurrentHeader(subtitle, title = this.resourceName) {
+      this.setHeader({
+        name: 'HeaderDefault',
+        data: { title, subtitle },
+      });
+    },
+    ...mapActions({ setHeader: 'setHeader', fetchItems: 'event/fetchItems' }),
   },
 };
 </script>

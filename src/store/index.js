@@ -2,14 +2,26 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import * as application from '@/store/modules/application';
 import * as user from '@/store/modules/user';
+import * as device from '@/store/modules/device';
+import * as event from '@/store/modules/event';
 
 import { DataProvider } from './data-provider';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    headerName: '',
+    headerData: {},
+  },
+  mutations: {
+    SET_HEADER_NAME(state, payload) {
+      state.headerName = payload;
+    },
+    SET_HEADER_DATA(state, payload) {
+      state.headerData = payload;
+    },
+  },
   actions: {
     async addNewUser(_state, data) {
       const resp = await DataProvider.getInstance().post('/auth/sign-up', data);
@@ -29,9 +41,15 @@ export default new Vuex.Store({
         return false;
       }
     },
+    setHeader({ commit, state }, { name, data }) {
+      if (state.headerName !== name) commit('SET_HEADER_NAME', name);
+      commit('SET_HEADER_DATA', data);
+    },
   },
   modules: {
     application,
     user,
+    device,
+    event,
   },
 });

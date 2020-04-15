@@ -15,7 +15,7 @@ import DeviceCreateUpdate from '@/components/devices/DeviceCreateUpdate.vue';
 import DeviceDetails from '@/components/devices/DeviceDetails.vue';
 // events
 import EventList from '@/components/events/EventList.vue';
-import EventCreateUpdate from '@/components/events/create-update/EventCreateUpdate.vue';
+import EventCreateUpdate from '@/components/events/EventCreateUpdate.vue';
 import EventDetails from '@/components/events/details/EventDetails.vue';
 import EventOverview from '@/components/events/details/EventOverview.vue';
 import EventAccess from '@/components/events/details/EventAccess.vue';
@@ -129,7 +129,7 @@ const routes = [
   },
   // device - details
   {
-    path: `${routePaths.device}/:id(\\d+)`,
+    path: `${routePaths.device}/:id`,
     name: 'DeviceDetails',
     component: DeviceDetails,
     meta: {
@@ -139,7 +139,7 @@ const routes = [
   },
   // device - update
   {
-    path: `${routePaths.device}/:id(\\d+)/edit`,
+    path: `${routePaths.device}/:id/edit`,
     name: 'DeviceUpdate',
     component: DeviceCreateUpdate,
     meta: {
@@ -168,7 +168,7 @@ const routes = [
   },
   // event - details
   {
-    path: `${routePaths.event}/:id(\\d+)`,
+    path: `${routePaths.event}/:id`,
     component: EventDetails,
     meta: {
       auth: false,

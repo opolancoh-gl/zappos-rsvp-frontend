@@ -1,30 +1,25 @@
 <template>
   <div class="header">
     <div class="container">
-      <slot>
-        <div class="row">
-          <div class="col text-center">
-            <HeaderTitle :title="title || '...'" :subTitle="subTitle" />
-          </div>
-        </div>
-      </slot>
+      <component :is="headerName"></component>
     </div>
     <HeaderWave />
   </div>
 </template>
 
 <script>
-import HeaderTitle from '@/components/_ui/HeaderTitle.vue';
-import HeaderWave from '@/components/_ui/HeaderWave.vue';
+import { mapState } from 'vuex';
+import HeaderDefault from './HeaderDefault.vue';
+import HeaderWave from './HeaderWave.vue';
 
 export default {
-  props: {
-    title: { type: String },
-    subTitle: { type: String },
-  },
+  name: 'Header',
   components: {
-    HeaderTitle,
+    HeaderDefault,
     HeaderWave,
+  },
+  computed: {
+    ...mapState(['headerName']),
   },
 };
 </script>

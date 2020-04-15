@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar />
-    <Header :title="title" :subTitle="subtitle" />
+    <Header />
     <div class="container my-4">
       <router-view />
     </div>
@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import NavBar from '@/components/_ui/NavBar.vue';
 import Header from '@/components/_ui/Header.vue';
 
@@ -18,13 +17,6 @@ export default {
     NavBar,
     Header,
   },
-  computed: {
-    ...mapState('application', {
-      title: (state) => state.headerTitle,
-      subtitle: (state) => state.headerSubtitle,
-    }),
-  },
-  mounted() {},
 };
 </script>
 

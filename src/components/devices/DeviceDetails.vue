@@ -1,54 +1,61 @@
 <template>
-  <div>
-    <Header :title="title" :subTitle="subTitle" />
-    <div class="container my-4">
-      <div class="card">
-        <div class="card-header">Device</div>
-        <div class="card-body">
-          <p>
-            <strong class="d-block">Label:</strong>
-            {{title}}
-          </p>
-          <p>
-            <strong class="d-block">Pairing Key:</strong>
-            {{pairingKey}}
-            <small
-              class="d-block text-muted"
-            >Please enter this key in the Famoco device.</small>
-          </p>
-          <router-link class="btn btn-primary" to="/devices/1/edit">Edit</router-link>
-          <router-link class="btn" to="/devices">Cancel</router-link>
-        </div>
-      </div>
+  <div class="card">
+    <div class="card-header">Device</div>
+    <div class="card-body">
+      <p>
+        <strong class="d-block">Label:</strong>
+        {{ item.label }}
+      </p>
+      <p>
+        <strong class="d-block">Connected to:</strong>
+        {{ item.event ? item.event.name : 'N/A' }}
+      </p>
+      <p>
+        <strong class="d-block">Pairing Key:</strong>
+        {{ item.pairingKey }}
+        <small class="d-block text-muted">Please enter this key in the Famoco device.</small>
+      </p>
+      <router-link
+        v-if="item.id"
+        class="btn btn-primary"
+        :to="{ name: 'DeviceUpdate', params: { id: item.id } }"
+      >
+        <i class="fas fa-pencil-alt mr-2"></i>
+        Edit
+      </router-link>
+      <router-link class="btn" :to="{ name: 'DeviceList' }">Close</router-link>
     </div>
   </div>
 </template>
 
 <script>
-import Header from '@/components/_ui/Header.vue';
+import { mapState, mapActions } from 'vuex';
 
 export default {
-  data() {
-    return {
-      title: '',
-      subTitle: '',
-      pairingKey: null,
-    };
+  name: 'DeviceDetails',
+  props: {
+    id: { type: [String, Number] },
   },
-  components: {
-    Header,
+  created() {
+    this.setCurrentHeader('...');
+    // [_review_] // Define what to do id is invalid or not exists
+    this.fetchItem(this.id).then(() => this.setCurrentHeader(`Total: ${this.itemsTotal}`));
   },
-  mounted() {
-    /* axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then((response) => (this.info = response)); */
-    this.title = 'Device #1';
-    this.subTitle = 'Connected to N/A';
-    this.pairingKey = Date.now();
+  computed: {
+    ...mapState('device', {
+      item: (state) => state.currentItem,
+      itemsTotal: (state) => state.itemsTotal,
+      resourceName: (state) => state.resourceName,
+    }),
+  },
+  methods: {
+    setCurrentHeader(subtitle, title = this.resourceName) {
+      this.setHeader({
+        name: 'HeaderDefault',
+        data: { title, subtitle },
+      });
+    },
+    ...mapActions({ setHeader: 'setHeader', fetchItem: 'device/fetchItem' }),
   },
 };
 </script>
-
-
-<style scoped>
-</style>

@@ -1,31 +1,32 @@
 <template>
-  <div>
-    <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between">
-        <div class="align-self-center">Devices</div>
-        <router-link class="btn btn-sm btn-primary" :to="{ name: 'DeviceCreate' }">
-          <i class="fas fa-plus mr-2"></i>
-          Add
-        </router-link>
-      </div>
-      <div class="list-group list-group-flush">
-        <div class="list-group-item" v-for="item in items" :key="item.id">
-          <div class="row">
-            <div class="col align-self-center">
-              <router-link to="/devices/1">{{ item.name }}</router-link>
-            </div>
-            <div class="col align-self-center">
-              <div class="text-muted">{{ item.description }}</div>
-            </div>
-            <div class="col text-right">
-              <router-link
-                class="btn btn-sm btn-primary"
-                :to="{ name: 'DeviceUpdate', params: { id: item.id } }"
-              >
-                <i class="fas fa-pencil-alt mr-2"></i>
-                Edit
+  <div class="card mb-4">
+    <TableHead :name="title" :links="tableHeadLinks" />
+    <TableBodyNoData v-if="items.length === 0" />
+    <div v-else class="list-group list-group-flush">
+      <div class="list-group-item" v-for="(item, index) in items" :key="index">
+        <div class="row">
+          <div class="col align-self-center">
+            <router-link :to="{ name: 'DeviceDetails', params: { id: item.id } }">{{
+              item.label
+            }}</router-link>
+          </div>
+          <div class="col align-self-center">
+            <div v-if="!item.event" class="text-muted">N/A</div>
+            <div v-else>
+              Connected to
+              <router-link :to="{ name: 'EventOverview', params: { id: item.event.id } }">
+                {{ item.event.name }}
               </router-link>
             </div>
+          </div>
+          <div class="col text-right">
+            <router-link
+              class="btn btn-sm btn-primary"
+              :to="{ name: 'DeviceUpdate', params: { id: item.id } }"
+            >
+              <i class="fas fa-pencil-alt mr-2"></i>
+              Edit
+            </router-link>
           </div>
         </div>
       </div>
@@ -34,22 +35,45 @@
 </template>
 
 <script>
-// import store from '@/store/data';
+import { mapState, mapActions } from 'vuex';
+import TableHead from '@/components/_ui/TableHead.vue';
+import TableBodyNoData from '@/components/_ui/TableBodyNoData.vue';
 
 export default {
+  name: 'DeviceList',
+  components: { TableHead, TableBodyNoData },
   data() {
     return {
-      items: [],
+      title: 'Devices',
+      tableHeadLinks: [
+        {
+          name: 'Add',
+          routeName: 'DeviceCreate',
+          class: 'btn-primary',
+          icon: 'fa-plus',
+        },
+      ],
     };
   },
   created() {
-    // this.items = store.devices;
+    this.setCurrentHeader('...');
+    this.fetchItems().then(() => this.setCurrentHeader(`Total: ${this.itemsTotal}`));
   },
-  mounted() {
-    this.$store.dispatch('application/setHeaderInfo', {
-      title: 'Devices',
-      subtitle: 'Total: 0',
-    });
+  computed: {
+    ...mapState('device', {
+      items: (state) => state.items,
+      itemsTotal: (state) => state.itemsTotal,
+      resourceName: (state) => state.resourceName,
+    }),
+  },
+  methods: {
+    setCurrentHeader(subtitle, title = this.resourceName) {
+      this.setHeader({
+        name: 'HeaderDefault',
+        data: { title, subtitle },
+      });
+    },
+    ...mapActions({ setHeader: 'setHeader', fetchItems: 'device/fetchItems' }),
   },
 };
 </script>

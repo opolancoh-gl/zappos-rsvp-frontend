@@ -7,12 +7,11 @@
         <div class="card-body">
           <form class="simple_form new_event" id="new_event" accept-charset="UTF-8">
             <div class="form-group string required event_name">
-              <label class="form-control-label string required" for="event_name"
-                >Event Name <abbr title="required">*</abbr></label
+              <label class="form-control-label string required" for="event_name">
+                Event Name <abbr title="required">*</abbr> </label
               ><input
                 class="form-control string required"
                 type="text"
-                name="event[name]"
                 id="event_name"
               />
             </div>
@@ -22,7 +21,6 @@
               ><input
                 class="form-control string email optional"
                 type="email"
-                name="event[contact_email]"
                 id="event_contact_email"
               /><small class="form-text text-muted"
                 >This will appear in places like the opt-in page, invite messages, RSVP pages,
@@ -149,4 +147,110 @@
   </div>
 </template>
 
-<script src="./event-create-update.js"></script>
+<script>
+import { mapState, mapActions } from 'vuex';
+import { formValidationMixin } from '@/mixins/form-validation-mixin';
+
+export default {
+  name: 'EventCreateUpdate',
+  mixins: [formValidationMixin],
+  props: {
+    id: { type: [String, Number] },
+  },
+  data() {
+    return {
+      formTitle: '',
+      confirmButtonText: '',
+      inputLabel: '',
+      inputEvent: '',
+      item: null,
+    };
+  },
+  components: {},
+  created() {
+    this.setCurrentHeader('...');
+    this.fetchEvents();
+    if (this.isEditMode) {
+      this.formTitle = 'Edit Device';
+      this.confirmButtonText = 'Update';
+      // [_review_] // Define what to do id is invalid or not exists
+      this.fetchItem(this.id).then(() => {
+        this.setCurrentHeader(`Total: ${this.itemsTotal}`);
+
+        this.item = this.$store.state.device.currentItem;
+        this.inputLabel = this.item.label;
+        this.inputEvent = this.item.event ? this.item.event.id : '';
+      });
+    } else {
+      this.formTitle = 'New Device';
+      this.confirmButtonText = 'Create';
+    }
+  },
+  computed: {
+    isEditMode() {
+      return typeof this.id !== 'undefined';
+    },
+    ...mapState('device', {
+      itemsTotal: (state) => state.itemsTotal,
+      resourceName: (state) => state.resourceName,
+    }),
+    ...mapState('event', {
+      events: (state) => state.items,
+    }),
+  },
+  methods: {
+    setCurrentHeader(subtitle, title = this.resourceName) {
+      this.setHeader({
+        name: 'HeaderDefault',
+        data: { title, subtitle },
+      });
+    },
+    submitForm() {
+      this.formErrors = {};
+      // validate label
+      this.inputLabel = this.inputLabel.trim();
+      if (this.inputLabel === '') this.formErrors.label = 'Label is required.';
+
+      // submit if valid
+      if (this.isValidForm) {
+        if (!this.item) this.item = {};
+
+        this.item.label = this.inputLabel;
+        this.item.event = this.events.find((element) => element.id === this.inputEvent);
+
+        if (this.item.id) this.updateItem(this.item);
+        else this.createItem(this.item);
+      }
+    },
+    createItem(item) {
+      this.$store
+        .dispatch('device/createItem', item)
+        .then(() => {
+          console.log('Device created!!', item);
+          this.$router.push({ name: 'DeviceList' });
+        })
+        .catch((error) => {
+          console.log('There was a problem creating your item', error);
+        });
+    },
+    updateItem(item) {
+      this.$store
+        .dispatch('device/updateItem', item)
+        .then(() => {
+          console.log('Device updated!!', item);
+          this.$router.push({ name: 'DeviceList' });
+        })
+        .catch((error) => {
+          console.log('There was a problem updating your item', error);
+        });
+    },
+    ...mapActions({
+      setHeader: 'setHeader',
+      fetchItem: 'device/fetchItem',
+      fetchEvents: 'event/fetchItems',
+    }),
+  },
+};
+</script>
+
+<style scoped></style>
