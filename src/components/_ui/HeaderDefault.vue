@@ -1,17 +1,18 @@
 <template>
   <div class="row">
     <div class="col text-center">
-      <div class="header-title">{{ item.title }}</div>
-      <div class="header-subtitle">{{ item.subtitle }}</div>
+      <HeaderTitle :title="item.title" :subtitle="item.subtitle" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import HeaderTitle from '@/components/_ui/HeaderTitle.vue';
 
 export default {
   name: 'HeaderDefault',
+  components: { HeaderTitle },
   computed: {
     ...mapState({
       item: (state) => state.headerData,
@@ -19,19 +20,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.header-title {
-  margin-bottom: 0.5rem;
-  font-size: 2.5rem;
-  line-height: 1;
-  font-weight: bold;
-}
-
-.header-subtitle {
-  margin-top: 0;
-  font-size: 1.2rem;
-  font-weight: 100;
-  line-height: 1.2;
-}
-</style>

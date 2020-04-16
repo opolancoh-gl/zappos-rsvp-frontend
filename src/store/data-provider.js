@@ -58,16 +58,6 @@ export class DataProvider {
     return resp;
   }
 
-  async getDevices() {
-    const resp = await this.get('devices');
-    return resp;
-  }
-
-  async getEvents() {
-    const resp = await this.get('events');
-    return resp;
-  }
-
   async get(resource, _query) {
     const resp = await this.http.get(resource);
     if (resp.status === 200) {

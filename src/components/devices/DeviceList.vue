@@ -57,7 +57,16 @@ export default {
   },
   created() {
     this.setCurrentHeader('...');
-    this.fetchItems().then(() => this.setCurrentHeader(`Total: ${this.itemsTotal}`));
+  },
+  mounted() {
+    (async () => {
+      try {
+        await this.fetchItems();
+        this.setCurrentHeader(`Total: ${this.itemsTotal}`);
+      } catch (error) {
+        console.log('[Exception-DeviceList]', error);
+      }
+    })();
   },
   computed: {
     ...mapState('device', {

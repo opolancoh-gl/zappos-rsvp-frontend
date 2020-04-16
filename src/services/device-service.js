@@ -1,30 +1,18 @@
-import axios from 'axios';
-
-const apiClient = axios.create({
-  baseURL: 'http://localhost:3004',
-  withCredentials: false, // This is the default
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
-});
+import http from './http-service';
 
 const resourceName = 'devices';
 
 export default {
   get() {
-    return apiClient.get(`/${resourceName}`);
+    return http.get(`/${resourceName}`);
   },
   getById(id) {
-    return apiClient.get(`/${resourceName}/${id}`);
+    return http.get(`/${resourceName}/${id}`);
   },
   create(item) {
-    return apiClient.post(`/${resourceName}`, item);
+    return http.post(`/${resourceName}`, item);
   },
   update(item) {
-    return apiClient.put(`/${resourceName}`, item);
-  },
-  remove(id) {
-    return apiClient.delete(`/${resourceName}`, id);
+    return http.put(`/${resourceName}/${item.id}`, item);
   },
 };

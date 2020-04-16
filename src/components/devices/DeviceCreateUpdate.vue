@@ -69,21 +69,34 @@ export default {
   components: {},
   created() {
     this.setCurrentHeader('...');
+  },
+  mounted() {
     this.fetchEvents();
     if (this.isEditMode) {
       this.formTitle = 'Edit Device';
       this.confirmButtonText = 'Update';
-      // [_review_] // Define what to do id is invalid or not exists
-      this.fetchItem(this.id).then(() => {
-        this.setCurrentHeader(`Total: ${this.itemsTotal}`);
 
-        this.item = this.$store.state.device.currentItem;
+      (async () => {
+        // [_review_] Define what to do when id is invalid or not exists
+        const item = await this.fetchItem(this.id);
+
+        this.setCurrentHeader(`Connected to ${item.event ? item.event : 'N/A'}`, item.label);
+        this.item = item;
         this.inputLabel = this.item.label;
         this.inputEvent = this.item.event ? this.item.event.id : '';
-      });
+      })();
     } else {
       this.formTitle = 'New Device';
       this.confirmButtonText = 'Create';
+      // [_review_] Improve the way to set itemsTotal
+      this.$store
+        .dispatch('event/fetchItems')
+        .then(() => {
+          this.setCurrentHeader(`Total: ${this.itemsTotal}`);
+        })
+        .catch((error) => {
+          console.log('[createOrUpdateItem] There was a problem creating your item.', error);
+        });
     }
   },
   computed: {
@@ -118,30 +131,21 @@ export default {
         this.item.label = this.inputLabel;
         this.item.event = this.events.find((element) => element.id === this.inputEvent);
 
-        if (this.item.id) this.updateItem(this.item);
-        else this.createItem(this.item);
+        this.createOrUpdateItem(this.item);
       }
     },
-    createItem(item) {
+    createOrUpdateItem(item) {
+      const keyMessage = item.id ? 'updated' : 'added';
       this.$store
-        .dispatch('device/createItem', item)
-        .then(() => {
-          console.log('Device created!!', item);
-          this.$router.push({ name: 'DeviceList' });
+        .dispatch('device/createOrUpdateItem', item)
+        .then((data) => {
+          this.$router.push({
+            name: 'DeviceDetails',
+            params: { id: data.id, actionMessage: `Device successfully ${keyMessage}!` },
+          });
         })
         .catch((error) => {
-          console.log('There was a problem creating your item', error);
-        });
-    },
-    updateItem(item) {
-      this.$store
-        .dispatch('device/updateItem', item)
-        .then(() => {
-          console.log('Device updated!!', item);
-          this.$router.push({ name: 'DeviceList' });
-        })
-        .catch((error) => {
-          console.log('There was a problem updating your item', error);
+          console.log('[createOrUpdateItem] There was a problem creating your item.', error);
         });
     },
     ...mapActions({

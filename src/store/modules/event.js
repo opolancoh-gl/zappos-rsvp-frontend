@@ -31,49 +31,43 @@ export const mutations = {
 };
 
 export const actions = {
-  fetchItems({ commit }) {
-    return DataService.get()
-      .then((response) => {
-        commit('SET_ITEMS', response.data);
-        commit('SET_ITEMS_TOTAL', response.data.length);
-        // [_review_] x-total-count can be set from header or meta object inside response.data
-        // commit('SET_ITEMS_TOTAL', parseInt(response.headers['x-total-count']));
-      })
-      .catch((error) => {
-        // [_review_] Use a log system
-        console.log('There was an error:', error.response);
-      });
+  async fetchItems({ commit }) {
+    const result = await DataService.get();
+    const { data } = result.data;
+    commit('SET_ITEMS', data);
+    commit('SET_ITEMS_TOTAL', data.length);
+    // [_review_] x-total-count can be set from header or meta object inside response.data
+    // commit('SET_ITEMS_TOTAL', parseInt(response.headers['x-total-count']));
   },
-  fetchItem({ commit, state, getters }, id) {
-    return new Promise((resolve, reject) => {
-      const item = getters.getById(id);
+  async fetchItem({ commit, getters }, id) {
+    const item = getters.getById(id);
 
-      if (item) {
-        commit('SET_CURRENT_ITEM', item);
-        resolve({ itemsTotal: state.itemsTotal });
-      } else {
-        DataService.getById(id)
-          .then((response) => {
-            commit('SET_CURRENT_ITEM', response.data);
-            // [_review_] Create a service to get this value
-            resolve({ itemsTotal: 0 });
-          })
-          .catch((error) => {
-            console.log('There was an error:', error.response);
-            reject(error);
-          });
-      }
-    });
+    if (item) {
+      commit('SET_CURRENT_ITEM', item);
+      return item;
+    }
+    const result = await DataService.getById(id);
+    const { data } = result.data;
+    commit('SET_CURRENT_ITEM', data);
+    return data;
   },
-  createItem({ commit }, item) {
-    return DataService.create(item).then(() => {
-      commit('CREATE_ITEM', item);
-    });
-  },
-  updateItem({ commit }, item) {
-    return DataService.update(item).then(() => {
-      commit('UPDATE_ITEM', item);
-    });
+  async createOrUpdateItem({ commit }, item) {
+    const freshItem = {};
+    freshItem.label = item.label;
+    if (item.event) freshItem.eventId = item.event.id;
+
+    if (item.id) {
+      freshItem.id = item.id;
+      const createResult = await DataService.update(freshItem);
+      const { data } = createResult.data;
+      commit('UPDATE_ITEM', data);
+      return data;
+    }
+
+    const updateteResult = await DataService.create(freshItem);
+    const { data } = updateteResult.data;
+    commit('CREATE_ITEM', data);
+    return data;
   },
   deleteItem({ commit }, id) {
     return DataService.remove(id).then(() => {

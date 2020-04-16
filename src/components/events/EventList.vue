@@ -13,7 +13,9 @@
                   <router-link :to="{ name: 'EventOverview', params: { id: item.id } }">
                     {{ item.name }}
                   </router-link>
-                  <small class="d-block">{{ item.description }}</small>
+                  <small class="d-block"
+                    >{{ item.startTime | datetimeAtShort }} - {{ item.location }}</small
+                  >
                 </div>
               </div>
             </div>
@@ -60,7 +62,16 @@ export default {
   },
   created() {
     this.setCurrentHeader('...');
-    this.fetchItems().then(() => this.setCurrentHeader(`Total: ${this.itemsTotal}`));
+  },
+  mounted() {
+    (async () => {
+      try {
+        await this.fetchItems();
+        this.setCurrentHeader(`Total: ${this.itemsTotal}`);
+      } catch (error) {
+        console.log('[Exception-EventList]', error);
+      }
+    })();
   },
   computed: {
     ...mapState('event', {

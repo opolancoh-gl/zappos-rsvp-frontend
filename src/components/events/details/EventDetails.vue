@@ -1,49 +1,39 @@
 <template>
-  <div>
-    <Header>
-      <HeaderContent
-        :title="title"
-        :subTitle1="subTitle1"
-        :subTitle2="subTitle2"
-        :navItems="navItems"
-      />
-    </Header>
-    <div class="container my-4">
-      <router-view></router-view>
-    </div>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
-import Header from '@/components/_ui/Header.vue';
-
-import HeaderContent from '@/components/_ui/HeaderContentNav.vue';
+import { mapState, mapActions } from 'vuex';
 
 export default {
+  name: 'EventDetails',
   props: {
-    id: { type: [String, Number], required: true },
+    id: { type: [String, Number] },
   },
-  data() {
-    return {
-      title: null,
-      subTitle1: null,
-      subTitle2: null,
-    };
-  },
-  components: {
-    Header,
-    HeaderContent,
-  },
-  created() {
-    /*
-    const item = store.getEvent(this.id);
-
-    this.title = item.name;
-    this.subTitle1 = this.$options.filters.datetimeAtShort(item.startDate);
-    this.subTitle2 = item.city;
-    */
+  mounted() {
+    (async () => {
+      try {
+        // [_review_] // Define what to do id is invalid or not exists
+        const { name, startTime, location } = await this.fetchItem(this.id);
+        this.setHeader({
+          name: 'HeaderWithNavigation',
+          data: {
+            title: name,
+            subtitle1: startTime,
+            subtitle2: location,
+            navItems: this.navItems,
+          },
+        });
+      } catch (error) {
+        console.log('[Exception-EventDetails]', error);
+      }
+    })();
   },
   computed: {
+    ...mapState('event', {
+      item: (state) => state.currentItem,
+      resourceName: (state) => state.resourceName,
+    }),
     navItems() {
       return [
         {
@@ -73,6 +63,9 @@ export default {
         },
       ];
     },
+  },
+  methods: {
+    ...mapActions({ setHeader: 'setHeader', fetchItem: 'event/fetchItem' }),
   },
 };
 </script>

@@ -10,12 +10,14 @@
 <script>
 import { mapState } from 'vuex';
 import HeaderDefault from './HeaderDefault.vue';
+import HeaderWithNavigation from './HeaderWithNavigation.vue';
 import HeaderWave from './HeaderWave.vue';
 
 export default {
   name: 'Header',
   components: {
     HeaderDefault,
+    HeaderWithNavigation,
     HeaderWave,
   },
   computed: {

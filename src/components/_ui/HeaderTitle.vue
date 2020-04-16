@@ -2,7 +2,7 @@
   <div>
     <div class="header-title">{{ title }}</div>
     <div class="header-subtitle">
-      <slot>{{ subTitle }}</slot>
+      <slot>{{ subtitle }}</slot>
     </div>
   </div>
 </template>
@@ -11,7 +11,7 @@
 export default {
   props: {
     title: { type: String },
-    subTitle: { type: String },
+    subtitle: { type: String },
   },
 };
 </script>
