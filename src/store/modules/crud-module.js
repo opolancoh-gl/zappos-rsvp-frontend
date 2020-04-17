@@ -1,11 +1,16 @@
 import { singular } from 'pluralize';
 
-import { DataProvider } from '../data-provider';
+import { DataProvider } from '@/services-layer';
 
 function titleCase(str) {
   return str[0].toUpperCase() + str.substring(1).toLowerCase();
 }
 
+/**
+ *
+ * @param {String} resourceName name of resource to be generated as module
+ * @param {Any} param properties to create the data state manager
+ */
 export function getStateManagement(
   resourceName,
   {
@@ -17,10 +22,15 @@ export function getStateManagement(
 ) {
   const capitalName = titleCase(resourceName);
   const sCapitalName = titleCase(singular(resourceName));
+  /** @type {String} name of module data getter */
   let DATA_PROVIDER_GETTER = dataProviderGetter;
+  /** @type {String} name of module data updater */
   let DATA_PROVIDER_UPDATER = dataProviderUpdater;
+  /** @type {String} name of module data creator */
   let DATA_PROVIDER_CREATOR = dataProviderCreator;
+  /** @type {String} name of module data deleter */
   let DATA_PROVIDER_DELETER = dataProviderDeleter;
+  // Generates custom name if those are not provided.
   if (!dataProviderGetter) {
     DATA_PROVIDER_GETTER = `get${capitalName}`;
   }

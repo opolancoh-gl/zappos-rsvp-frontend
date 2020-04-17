@@ -1,10 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import * as application from '@/store/modules/application';
-// import * as user from '@/store/modules/user';
 import { getStateManagement } from '@/store/modules/crud-module';
 
-import { DataProvider } from './data-provider';
+import { DataProvider } from '@/services-layer';
 
 Vue.use(Vuex);
 

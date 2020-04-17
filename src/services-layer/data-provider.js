@@ -1,5 +1,11 @@
 import axios from 'axios';
 
+// Two Seconds to verify the code.
+const VERIFICATION_DELAY = 2000;
+
+const STATUS_OK = 200;
+const STATUS_UNAUTHORIZED = 401;
+
 export class DataProvider {
   http = null;
 
@@ -24,7 +30,7 @@ export class DataProvider {
 
   verifySession() {
     const now = new Date();
-    if (this.lastSessionCheck && now - this.lastSessionCheck < 2000) {
+    if (this.lastSessionCheck && now - this.lastSessionCheck < VERIFICATION_DELAY) {
       return this.lastSessionValue;
     }
     const sessionChecker = new Promise((resolve, reject) => {
@@ -34,15 +40,15 @@ export class DataProvider {
       this.http
         .head('/auth/verify')
         .then((resp) => {
-          if (resp.status !== 200) {
+          if (resp.status !== STATUS_OK) {
             window.localStorage.setItem('tkn', null);
-            resolve(resp.status === 200);
+            resolve(resp.status === STATUS_OK);
           }
-          resolve(resp.status === 200);
+          resolve(resp.status === STATUS_OK);
         })
         .catch((err) => {
           window.localStorage.setItem('tkn', null);
-          if (err.response && err.response.status === 401) {
+          if (err.response && err.response.status === STATUS_UNAUTHORIZED) {
             resolve(false);
           } else {
             reject(err);
@@ -55,7 +61,7 @@ export class DataProvider {
 
   async get(resource, _query) {
     const resp = await this.http.get(resource);
-    if (resp.status === 200) {
+    if (resp.status === STATUS_OK) {
       return resp.data.data;
     }
     return [];
@@ -74,38 +80,6 @@ export class DataProvider {
   async delete(resource, body, field = 'id') {
     const resp = await this.http.delete(`${resource}/${body[field]}`, body);
     return resp;
-  }
-
-  getUsers() {
-    return this.get('users');
-  }
-
-  createUser(user) {
-    return this.post('users', user);
-  }
-
-  updateUser(user) {
-    return this.put('users', user);
-  }
-
-  deleteUser(user) {
-    return this.delete('users', user);
-  }
-
-  getAccounts() {
-    return this.get('accounts');
-  }
-
-  createAccount() {
-    return this.post('accounts');
-  }
-
-  updateAccount(account) {
-    return this.put('accounts', account);
-  }
-
-  deleteAccount(account) {
-    return this.delete('accounts', account);
   }
 
   /**
