@@ -23,6 +23,8 @@ import EventMessageCenter from '@/components/events/details/message-center/Detai
 import EventAttendees from '@/components/events/details/EventAttendees.vue';
 import EventBlastCenter from '@/components/events/details/EventBlastCenter.vue';
 
+const UUID_RE = '[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}';
+
 Vue.use(VueRouter);
 
 const routePaths = { user: '/users', device: '/devices', event: '/events' };
@@ -90,7 +92,7 @@ const routes = [
   },
   // user - details
   {
-    path: `${routePaths.user}/:id(\\w+)`,
+    path: `${routePaths.user}/:id(${UUID_RE})`,
     name: 'UserDetails',
     component: UserDetails,
     meta: {
@@ -100,7 +102,7 @@ const routes = [
   },
   // user - update
   {
-    path: `${routePaths.user}/:id(\\w+)/edit`,
+    path: `${routePaths.user}/:id(${UUID_RE})/edit`,
     name: 'UserUpdate',
     component: UserCreateUpdate,
     meta: {

@@ -24,7 +24,7 @@ export class DataProvider {
 
   verifySession() {
     const now = new Date();
-    if (this.lastSessionCheck && now - this.lastSessionCheck < 1000) {
+    if (this.lastSessionCheck && now - this.lastSessionCheck < 2000) {
       return this.lastSessionValue;
     }
     const sessionChecker = new Promise((resolve, reject) => {
@@ -53,11 +53,6 @@ export class DataProvider {
     return sessionChecker;
   }
 
-  async getUsers() {
-    const resp = await this.get('users');
-    return resp;
-  }
-
   async get(resource, _query) {
     const resp = await this.http.get(resource);
     if (resp.status === 200) {
@@ -71,15 +66,55 @@ export class DataProvider {
     return resp;
   }
 
+  async put(resource, body, field = 'id') {
+    const resp = await this.http.put(`${resource}/${body[field]}`, body);
+    return resp;
+  }
+
+  async delete(resource, body, field = 'id') {
+    const resp = await this.http.delete(`${resource}/${body[field]}`, body);
+    return resp;
+  }
+
+  getUsers() {
+    return this.get('users');
+  }
+
+  createUser(user) {
+    return this.post('users', user);
+  }
+
+  updateUser(user) {
+    return this.put('users', user);
+  }
+
+  deleteUser(user) {
+    return this.delete('users', user);
+  }
+
+  getAccounts() {
+    return this.get('accounts');
+  }
+
+  createAccount() {
+    return this.post('accounts');
+  }
+
+  updateAccount(account) {
+    return this.put('accounts', account);
+  }
+
+  deleteAccount(account) {
+    return this.delete('accounts', account);
+  }
+
   /**
    * @returns {DataProvider} data provider instance.
    */
   static getInstance() {
     if (!DataProvider.instance || window.$app.renew) {
       DataProvider.instance = new DataProvider();
-      if (window.$app.renew) {
-        window.$app.api = DataProvider.instance;
-      }
+      window.$app.api = DataProvider.instance;
     }
     return DataProvider.instance;
   }
