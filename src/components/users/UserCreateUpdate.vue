@@ -2,8 +2,12 @@
   <div class="card">
     <div class="card-header">{{ formTitle }}</div>
     <div class="card-body">
-      <form @submit.prevent="submitForm" class="needs-validation" novalidate>
-        <div class="alert alert-danger" v-if="!isValidForm">
+      <form
+        @submit.prevent="submitForm"
+        class="needs-validation"
+        novalidate
+      >
+        <div class="alert alert-danger" v-if="$v.$error">
           Please correct the following error(s):
         </div>
         <!-- user name -->
@@ -14,11 +18,16 @@
             class="form-control"
             id="userName"
             placeholder="Name"
-            v-model="inputName"
-            :class="{ 'is-invalid': !isValidFormProperty('name') }"
+            v-model="editableUser.username"
+            :class="{
+              'is-invalid': $v.editableUser.username.$error,
+            }"
           />
-          <div class="invalid-feedback">
-            {{ formErrors.name }}
+          <div
+            v-if="$v.editableUser.username.$error"
+            class="invalid-feedback"
+          >
+            Invalid user name
           </div>
         </div>
         <!-- user email -->
@@ -29,11 +38,16 @@
             class="form-control"
             id="userEmail"
             placeholder="Email"
-            v-model="inputEmail"
-            :class="{ 'is-invalid': !isValidFormProperty('email') }"
+            v-model="editableUser.email"
+            :class="{
+              'is-invalid': $v.editableUser.email.$error,
+            }"
           />
-          <div class="invalid-feedback">
-            {{ formErrors.email }}
+          <div
+            v-if="$v.editableUser.email.$error"
+            class="invalid-feedback"
+          >
+            Invalid email
           </div>
         </fieldset>
         <!-- user permissions -->
@@ -44,66 +58,78 @@
               class="form-check-input"
               type="checkbox"
               id="permCrudSystemUsers"
-              v-model="inputPermCrudSystemUsers"
+              v-model="permissions.crud_system_users"
             />
-            <label class="form-check-label" for="permCrudSystemUsers">
-              Create | Edit | Delete : System Users
-            </label>
+            <label
+              class="form-check-label"
+              for="permCrudSystemUsers"
+              >Create | Edit | Delete : System Users</label
+            >
           </div>
           <div class="form-check">
             <input
               class="form-check-input optional"
               type="checkbox"
               id="permCrudEvents"
-              v-model="inputPermCrudEvents"
+              v-model="permissions.crud_events"
             />
-            <label class="form-check-label" for="permCrudEvents">
-              Create | Edit | Delete : Events
-            </label>
+            <label
+              class="form-check-label"
+              for="permCrudEvents"
+              >Create | Edit | Delete : Events</label
+            >
           </div>
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
               id="permCrudEventUsers"
-              v-model="inputPermCrudEventUsers"
+              v-model="permissions.crud_event_users"
             />
-            <label class="form-check-label" for="permCrudEventUsers">
-              Create | Edit | Delete : Event Users
-            </label>
+            <label
+              class="form-check-label"
+              for="permCrudEventUsers"
+              >Create | Edit | Delete : Event Users</label
+            >
           </div>
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
               id="permImportEventUsers"
-              v-model="inputPermImportEventUsers"
+              v-model="permissions.bulk_event_users"
             />
-            <label class="form-check-label" for="permImportEventUsers">
-              Bulk import : Event Users
-            </label>
+            <label
+              class="form-check-label"
+              for="permImportEventUsers"
+              >Bulk import : Event Users</label
+            >
           </div>
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
               id="permCrudDevices"
-              v-model="inputPermCrudDevices"
+              v-model="permissions.crud_devices"
             />
-            <label class="form-check-label" for="permCrudDevices">
-              Create | Edit | Delete : Devices
-            </label>
+            <label
+              class="form-check-label"
+              for="permCrudDevices"
+              >Create | Edit | Delete : Devices</label
+            >
           </div>
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
               id="permAssignDevices"
-              v-model="inputPermAssignDevices"
+              v-model="permissions.assign_devices"
             />
-            <label class="form-check-label" for="permAssignDevices">
-              Assign devices to events
-            </label>
+            <label
+              class="form-check-label"
+              for="permAssignDevices"
+              >Assign devices to events</label
+            >
           </div>
         </div>
         <!-- user account -->
@@ -112,123 +138,164 @@
           <select
             id="userAccounts"
             class="form-control"
-            v-model="inputAccount"
-            :class="{ 'is-invalid': !isValidFormProperty('account') }"
+            v-model="editableUser.accountId"
+            :class="{
+              'is-invalid':
+                $v.editableUser.accountId.$error,
+            }"
           >
-            <option value="" selected>Choose ...</option>
-            <option v-for="account in accounts" :value="account.id" :key="account.id">
-              {{ account.name }}
-            </option>
+            <option disabled selected>Choose ...</option>
+            <option
+              v-for="account in accounts"
+              :value="account.id"
+              :key="account.id"
+              >{{ account.name }}</option
+            >
           </select>
-          <div class="invalid-feedback">
-            {{ formErrors.account }}
+          <div
+            v-if="$v.editableUser.accountId.$error"
+            class="invalid-feedback"
+          >
+            Invalid account
           </div>
         </div>
         <!-- actions -->
-        <button type="submit" class="btn btn-primary">{{ confirmButtonName }}</button>
-        <router-link class="btn" :to="{ name: 'UserList' }">Cancel</router-link>
+        <button type="submit" class="btn btn-primary">
+          {{ currentFormAction }}
+        </button>
+        <router-link class="btn" :to="{ name: 'UserList' }"
+          >Cancel</router-link
+        >
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { formValidationMixin } from '@/mixins/form-validation-mixin';
-import userService from '@/services/user-service';
-import accountService from '@/services/account-service';
-import validationUtils from '@/utils/validation-utils';
+import { required, email } from 'vuelidate/lib/validators';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'UserCreateUpdate',
-  mixins: [formValidationMixin],
+  mixins: [],
   props: {
-    id: { type: [String, Number] },
+    id: { type: String },
   },
   data() {
     return {
       formTitle: '',
-      confirmButtonName: '',
-      accounts: [],
-      inputName: '',
-      inputEmail: '',
-      inputPermCrudSystemUsers: false,
-      inputPermCrudEvents: false,
-      inputPermCrudEventUsers: false,
-      inputPermImportEventUsers: false,
-      inputPermCrudDevices: false,
-      inputPermAssignDevices: false,
-      inputAccount: '',
+      currentFormAction: 'Create',
+      permissions: {},
+      editableUser: {},
+      submitStatus: null,
     };
   },
+  validations: {
+    editableUser: {
+      email: {
+        email,
+        required,
+      },
+      username: {
+        required,
+      },
+      accountId: {
+        required,
+      },
+    },
+  },
   components: {},
-  created() {
-    if (this.isEditMode) {
-      this.setFormUI({ formTitle: 'Edit User', confirmButtonName: 'Update' });
-      (async () => {
-        const { data } = await userService.getById(this.id);
-        this.setFormItem(data);
-        this.setHeaderTitle({ title: data.name, subTitle: '[to be implemented]' });
-      })();
+  watch: {
+    users(fetchedUsers) {
+      this.updateEditableUser(fetchedUsers);
+    },
+  },
+  mounted() {
+    this.currentFormAction = this.isEditMode
+      ? 'Update'
+      : 'Create';
+    this.formTitle = this.isEditMode
+      ? 'Edit User'
+      : 'New User';
+    this.$store.dispatch('application/setHeaderInfo', {
+      title: 'Users',
+      subtitle: this.currentFormAction,
+    });
+    if (!this.users.length) {
+      this.getUsers();
     } else {
-      this.setFormUI({ formTitle: 'New User', confirmButtonName: 'Create' });
-      // this.setFormItem(this.freshItem);
-      (async () => {
-        const itemsCount = await userService.getAllCount();
-        this.setHeaderTitle({ title: 'Users', subTitle: `Total: ${itemsCount}` });
-      })();
+      this.updateEditableUser(this.users);
     }
+    this.getAccounts();
   },
   computed: {
     isEditMode() {
       return typeof this.id !== 'undefined';
     },
+    ...mapGetters({
+      accounts: 'account/getAccounts',
+      users: 'user/getUsers',
+    }),
   },
   methods: {
-    submitForm() {
-      this.formErrors = {};
-      // validate name
-      this.inputName = this.inputName.trim();
-      if (this.inputName === '') this.formErrors.name = 'Name is required.';
-
-      // validate email
-      this.inputEmail = this.inputEmail.trim();
-      if (!validationUtils.isEmail(this.inputEmail)) {
-        this.formErrors.email = 'Please enter an email address.';
+    updateEditableUser(fetchedUsers) {
+      if (!this.isEditMode) {
+        return;
       }
-
-      // validate account
-      if (this.inputAccount === '') this.formErrors.account = 'Account is required.';
-
-      // submit if valid
-      if (this.isValidForm) {
-        console.log('User created/updated!!');
+      const user = fetchedUsers
+        .filter((val) => val.id === this.id)
+        .pop();
+      if (user) {
+        this.editableUser = user;
+        this.permissions = user.permissions.reduce(
+          (acc, key) => {
+            acc[key] = true;
+            return acc;
+          },
+          {},
+        );
+      }
+    },
+    async submitForm() {
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR';
+      } else {
+        this.submitStatus = 'PENDING';
+        this.saveFormInfo()
+          .then(() => {
+            this.submitStatus = 'LOGGED_IN';
+          })
+          .catch(() => {
+            this.submitStatus = 'ERROR';
+          });
+      }
+    },
+    async saveFormInfo() {
+      const userInfo = {
+        ...this.editableUser,
+      };
+      userInfo.permissions = Object.entries(
+        this.permissions,
+      )
+        .filter(([_key, val]) => val)
+        .map(([key, _val]) => key);
+      if (this.isEditMode) {
+        await this.updateUser(userInfo);
+        this.$router.push({ name: 'UserList' });
+      } else {
+        userInfo.password = '$empty$';
+        await this.createUser(userInfo);
         this.$router.push({ name: 'UserList' });
       }
     },
-    setFormUI({ formTitle, confirmButtonName }) {
-      this.formTitle = formTitle;
-      this.confirmButtonName = confirmButtonName;
-      // populate listbox account
-      (async () => {
-        const { data: accounts } = await accountService.getAll();
-        this.accounts = accounts;
-      })();
-    },
-    setFormItem(item) {
-      // populate form item
-      this.inputId = item.id;
-      this.inputName = item.name;
-      this.inputEmail = item.email;
-      this.inputPermCrudSystemUsers = item.permCrudSystemUsers;
-      this.inputPermCrudEvents = item.permCrudEvents;
-      this.inputPermCrudEventUsers = item.permCrudEventUsers;
-      this.inputPermImportEventUsers = item.permImportEventUsers;
-      this.inputPermCrudDevices = item.permCrudDevices;
-      this.inputPermAssignDevices = item.permAssignDevices;
-      this.inputAccount = item.account.id;
-    },
-    ...mapActions(['setHeaderTitle']),
+    ...mapActions({
+      getAccounts: 'account/getItemsFromAPi',
+      getUsers: 'user/getItemsFromAPi',
+      updateUser: 'user/updateItem',
+      createUser: 'user/createItem',
+      deleteUser: 'user/deleteItem',
+    }),
   },
 };
 </script>

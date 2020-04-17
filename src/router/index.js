@@ -23,9 +23,15 @@ import EventMessageCenter from '@/components/events/details/message-center/Detai
 import EventAttendees from '@/components/events/details/EventAttendees.vue';
 import EventBlastCenter from '@/components/events/details/EventBlastCenter.vue';
 
+import { uuidRE } from '@/utils/validation-utils';
+
 Vue.use(VueRouter);
 
-const routePaths = { user: '/users', device: '/devices', event: '/events' };
+const routePaths = {
+  user: '/users',
+  device: '/devices',
+  event: '/events',
+};
 
 const routes = [
   {
@@ -90,7 +96,7 @@ const routes = [
   },
   // user - details
   {
-    path: `${routePaths.user}/:id(\\w+)`,
+    path: `${routePaths.user}/:id(${uuidRE.source})`,
     name: 'UserDetails',
     component: UserDetails,
     meta: {
@@ -100,7 +106,7 @@ const routes = [
   },
   // user - update
   {
-    path: `${routePaths.user}/:id(\\w+)/edit`,
+    path: `${routePaths.user}/:id(${uuidRE.source})/edit`,
     name: 'UserUpdate',
     component: UserCreateUpdate,
     meta: {
@@ -233,7 +239,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ '../views/About.vue'
+      ),
     meta: {
       auth: false,
     },
@@ -250,7 +259,12 @@ router.beforeEach(async (to, from, next) => {
   const SIGNIN = '/signin';
   const reqLogin = to.meta && to.meta.auth;
   const loggedIn = await window.$app.isLoggedIn();
-  if (loggedIn && to.query && to.query.next && to.query.next !== to.path) {
+  if (
+    loggedIn &&
+    to.query &&
+    to.query.next &&
+    to.query.next !== to.path
+  ) {
     return next({
       path: to.query.next,
     });
@@ -261,7 +275,12 @@ router.beforeEach(async (to, from, next) => {
   if (!reqLogin) {
     return next();
   }
-  if (loggedIn && from.query && from.query.next && from.query.next !== to.path) {
+  if (
+    loggedIn &&
+    from.query &&
+    from.query.next &&
+    from.query.next !== to.path
+  ) {
     return next({
       path: from.query.next,
     });
