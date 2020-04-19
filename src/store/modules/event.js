@@ -39,13 +39,11 @@ export const actions = {
     // [_review_] x-total-count can be set from header or meta object inside response.data
     // commit('SET_ITEMS_TOTAL', parseInt(response.headers['x-total-count']));
   },
-  async fetchItem({ commit, getters }, id) {
-    const item = getters.getById(id);
-
-    if (item) {
-      commit('SET_CURRENT_ITEM', item);
-      return item;
+  async fetchItem({ commit, state }, id) {
+    if (state.currentItem.id === id) {
+      return state.currentItem;
     }
+
     const result = await DataService.getById(id);
     const { data } = result.data;
     commit('SET_CURRENT_ITEM', data);

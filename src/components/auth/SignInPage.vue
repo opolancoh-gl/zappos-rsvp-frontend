@@ -2,11 +2,12 @@
   <div>
     <div class="text-center">
       <div class="sign-in" id="clearance">
-        <div class="form-signin">
+        <form class="form-signin" @submit.prevent="onSubmit">
           <div novalidate="novalidate" class="simple_form session" method="post">
             <div class="form-group email required session_email mb-3">
               <input
                 class="form-control string email required form-control-lg"
+                :class="{ 'is-invalid': $v.email.$error }"
                 placeholder="Email"
                 type="email"
                 id="session_email"
@@ -16,17 +17,19 @@
             <div class="form-group password required session_password mb-3">
               <input
                 class="form-control password required form-control-lg"
+                :class="{ 'is-invalid': $v.password.$error }"
                 placeholder="Password"
                 type="password"
                 id="session_password"
                 v-model="password"
               />
             </div>
-            <button
-              @click="logIn"
+            <input
+              type="submit"
               class="btn btn-primary btn btn-lg btn-primary btn-block"
               data-disable-with="Sign in"
-            >Sign in</button>
+              value="Sign in"
+            />
           </div>
           <div class="forgot-btn">
             <div>
@@ -36,19 +39,31 @@
               <a href="/signup">Sign up</a>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators';
+
 export default {
   data() {
     return {
-      email: 'oscar.granada@gmail.com',
-      password: 'samplepass',
+      email: '',
+      password: '',
+      submitStatus: null,
     };
+  },
+  validations: {
+    email: {
+      required,
+      email,
+    },
+    password: {
+      required,
+    },
   },
   components: {},
   mounted() {
@@ -58,6 +73,21 @@ export default {
     cleanData() {
       this.email = '';
       this.password = '';
+    },
+    onSubmit() {
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR';
+      } else {
+        this.submitStatus = 'PENDING';
+        this.logIn()
+          .then(() => {
+            this.submitStatus = 'LOGGED_IN';
+          })
+          .catch(() => {
+            this.submitStatus = 'ERROR';
+          });
+      }
     },
     async logIn() {
       const resp = await this.$store.dispatch('logIn', {

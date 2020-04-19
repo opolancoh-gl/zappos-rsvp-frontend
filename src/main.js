@@ -8,6 +8,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 
 import Vue from 'vue';
+import Vuelidate from 'vuelidate'
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
@@ -29,6 +30,8 @@ TextFilter.forEach((item) => Vue.filter(item.name, item.f));
 Vue.config.productionTip = false;
 Vue.prototype.$_app = $appUtils;
 Vue.prototype.$_textUtils = $textUtils;
+
+Vue.use(Vuelidate);
 
 new Vue({
   router,

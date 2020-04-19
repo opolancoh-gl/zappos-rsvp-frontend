@@ -1,4 +1,4 @@
-import { DataProvider } from '../data-provider';
+import { DataProvider } from '@/services-layer';
 
 const HEADER_TITLE = 'Zappos';
 const HEADER_SUBTITLE = '...';

@@ -7,7 +7,7 @@ export default {
     return http.get(`/${resourceName}`);
   },
   getById(id) {
-    return http.get(`/${resourceName}/${id}`);
+    return http.get(`/${resourceName}/${id}?metadata=__details`);
   },
   create(item) {
     return http.post(`/${resourceName}`, item);

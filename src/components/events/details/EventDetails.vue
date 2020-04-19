@@ -11,6 +11,7 @@ export default {
     id: { type: [String, Number] },
   },
   mounted() {
+    console.log('EventDetails mounted');
     (async () => {
       try {
         // [_review_] // Define what to do id is invalid or not exists

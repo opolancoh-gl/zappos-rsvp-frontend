@@ -21,9 +21,13 @@
       </div>
       <div class="card-body text-center">
         <div class="row">
-          <div class="col"><strong class="d-block">Start Time</strong>02/25/20 at 2:00pm</div>
-          <div class="col"><strong class="d-block">End Time</strong>02/27/20 at 2:50pm</div>
-          <div class="col"><strong class="d-block">Location:</strong>San Francisco</div>
+          <div class="col">
+            <strong class="d-block">Start Time</strong>{{ item.startTime | datetimeAtShort }}
+          </div>
+          <div class="col">
+            <strong class="d-block">End Time</strong>{{ item.endTime | datetimeAtShort }}
+          </div>
+          <div class="col"><strong class="d-block">Location:</strong>{{ item.location }}</div>
         </div>
       </div>
     </div>
@@ -140,9 +144,28 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 export default {
-  data() {
-    return { item: {} };
+  name: 'EventOverview',
+  mounted() {
+    console.log('EventOverview mounted');
+    (async () => {
+      try {
+        // [_review_] // Define what to do id is invalid or not exists
+        this.fetchItem(this.$route.params.id);
+      } catch (error) {
+        console.log('[Exception-EventDetails]', error);
+      }
+    })();
+  },
+  computed: {
+    ...mapState('event', {
+      item: (state) => state.currentItem,
+    }),
+  },
+  methods: {
+    ...mapActions({ fetchItem: 'event/fetchItem' }),
   },
 };
 </script>
