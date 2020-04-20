@@ -92,6 +92,7 @@ export default {
         confirmButtonText: 'Yes, delete it!',
       });
       if (result.value) {
+        console.log('yes');
         await this.deleteUser(user);
         await this.getUsers();
         Swal.fire(

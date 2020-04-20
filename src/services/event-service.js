@@ -13,9 +13,9 @@ export default {
     return http.post(`/${resourceName}`, item);
   },
   update(item) {
-    return http.put(`/${resourceName}/${item.id}`, item);
+    return http.put(`/${resourceName}/${item.id}?metadata=__details`, item);
   },
   remove(id) {
-    return http.delete(`/${resourceName}/${id}`, id);
+    return http.delete(`/${resourceName}/${id}?metadata=__details`, id);
   },
 };

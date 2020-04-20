@@ -1,159 +1,195 @@
 <template>
-  <div>
-    <Header v-if="typeof id === 'undefined'" :title="title" :subTitle="subTitle" />
-    <div class="container my-4">
-      <div class="card">
-        <div class="card-header">New Event</div>
-        <div class="card-body">
-          <form class="simple_form new_event" id="new_event" accept-charset="UTF-8">
-            <div class="form-group string required event_name">
-              <label class="form-control-label string required" for="event_name">
-                Event Name <abbr title="required">*</abbr> </label
-              ><input
-                class="form-control string required"
-                type="text"
-                id="event_name"
+  <div class="card">
+    <div class="card-header">{{ this.formTitle }}</div>
+    <div class="card-body">
+      <form @submit.prevent="submitForm" novalidate>
+        <div class="alert alert-danger" v-if="$v.$error">
+          Please correct the following error(s):
+        </div>
+        <!-- Name -->
+        <div class="form-group">
+          <label for="name">
+            Event Name *
+          </label>
+          <input
+            class="form-control"
+            type="text"
+            id="name"
+            v-model="name"
+            :class="{ 'is-invalid': $v.name.$error }"
+          />
+          <div class="invalid-feedback">
+            {{ validationMessage.requiredField }}
+          </div>
+          <!-- v-if="$v.name.$error" -->
+        </div>
+        <!-- Contact Email -->
+        <div class="form-group">
+          <label for="contactEmail">
+            Contact Email
+          </label>
+          <input
+            class="form-control"
+            type="email"
+            id="contactEmail"
+            v-model="contactEmail"
+            :class="{ 'is-invalid': $v.contactEmail.$error }"
+          />
+          <div class="invalid-feedback">
+            {{ validationMessage.email }}
+          </div>
+          <small class="form-text text-muted">
+            This will appear in places like the opt-in page, invite messages, RSVP pages, etc.
+          </small>
+        </div>
+        <!-- Start Time -->
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="startTime">Start Time *</label>
+              <input
+                class="form-control mx-1"
+                type="datetime-local"
+                id="startTime"
+                v-model="startTime"
+                :class="{ 'is-invalid': $v.startTime.$error }"
               />
+              <div class="invalid-feedback">
+                {{ validationMessage.requiredField }}
+              </div>
             </div>
-            <div class="form-group email optional event_contact_email">
-              <label class="form-control-label email optional" for="event_contact_email"
-                >Contact Email</label
-              ><input
-                class="form-control string email optional"
-                type="email"
-                id="event_contact_email"
-              /><small class="form-text text-muted"
-                >This will appear in places like the opt-in page, invite messages, RSVP pages,
-                etc.</small
-              >
+          </div>
+          <!-- End Time -->
+          <div class="col">
+            <div class="form-group">
+              <label for="endTime">End Time *</label>
+              <input
+                class="form-control mx-1"
+                type="datetime-local"
+                id="endTime"
+                v-model="endTime"
+                :class="{ 'is-invalid': $v.endTime.$error }"
+              />
+              <div class="invalid-feedback">
+                {{ validationMessage.requiredField }}
+              </div>
             </div>
+          </div>
+          <!-- Location -->
+          <div class="col">
+            <div class="form-group">
+              <label for="location">Location *</label>
+              <input
+                class="form-control"
+                type="text"
+                id="location"
+                v-model="location"
+                :class="{ 'is-invalid': $v.location.$error }"
+              />
+              <div class="invalid-feedback">
+                {{ validationMessage.requiredField }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Image -->
+        <label>Event Image</label>
+        <div><input type="file" /></div>
+        <div class="mt-4">
+          <div class="form-group">
+            <div class="form-check">
+              <label for="optInConfig">
+                <input class="form-check-input" type="checkbox" id="optInConfig" />
+                Close Opt In Page
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="mt-5 mb-3">
+          <h5>Advanced Options</h5>
+          <div class="card card-body bg-light">
             <div class="row">
               <div class="col">
-                <div class="form-group datetime required event_start_time">
-                  <label class="form-control-label datetime required" for="event_start_time"
-                    >Start Time <abbr title="required">*</abbr></label
+                <!-- Account -->
+                <div class="form-group">
+                  <label for="account"> Account * </label>
+                  <select
+                    class="form-control"
+                    id="account"
+                    v-model="account"
+                    :class="{ 'is-invalid': $v.account.$error }"
                   >
-                  <div class="d-flex flex-row justify-content-between align-items-center">
-                    <input
-                      class="form-control mx-1 datetime required"
-                      type="datetime-local"
-                      name="event[start_time]"
-                      id="event_start_time"
-                    />
+                    <option value="" selected>Choose ...</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    {{ validationMessage.requiredField }}
                   </div>
                 </div>
               </div>
+              <!-- Attendee Limit -->
               <div class="col">
-                <div class="form-group datetime required event_end_time">
-                  <label class="form-control-label datetime required" for="event_end_time"
-                    >End Time <abbr title="required">*</abbr></label
-                  >
-                  <div class="d-flex flex-row justify-content-between align-items-center">
-                    <input
-                      class="form-control mx-1 datetime required"
-                      type="datetime-local"
-                      name="event[end_time]"
-                      id="event_end_time"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-group string required event_location">
-                  <label class="form-control-label string required" for="event_location"
-                    >Location <abbr title="required">*</abbr></label
-                  ><input class="form-control string required" type="text" id="event_location" />
-                </div>
-              </div>
-            </div>
-            <label>Event Image</label>
-            <div class="dz-message"></div>
-            <div class="fallback"><input type="file" id="event_image" /></div>
-            <div class="mt-4">
-              <fieldset class="form-group boolean optional event_opt_in_config">
-                <div class="form-check">
+                <div class="form-group">
+                  <label for="attendeeLimit">
+                    Event-Wide Attendee Limit
+                  </label>
                   <input
-                    class="form-check-input boolean optional"
-                    type="checkbox"
-                    value="1"
-                    id="event_opt_in_config"
+                    class="form-control"
+                    type="number"
+                    step="1"
+                    value="1000"
+                    id="attendeeLimit"
+                    v-model="inputAttendeeLimit"
                   />
-                  <label class="form-check-label boolean optional" for="event_opt_in_config"
-                    >Close Opt In Page</label
-                  >
-                </div>
-              </fieldset>
-            </div>
-            <div class="mt-5 mb-3">
-              <h5>Advanced Options</h5>
-              <div class="card card-body bg-light">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group select required event_account">
-                      <label class="form-control-label select required" for="event_account_id"
-                        >Account <abbr title="required">*</abbr></label
-                      ><select class="form-control select required" id="event_account_id"
-                        ><option value="1">Kuhn Inc</option></select
-                      >
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group integer optional event_attendee_limit form-group-valid">
-                      <label class="form-control-label integer optional" for="event_attendee_limit"
-                        >Event-Wide Attendee Limit</label
-                      ><input
-                        class="form-control is-valid numeric integer optional"
-                        type="number"
-                        step="1"
-                        value="1000"
-                        id="event_attendee_limit"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group string optional disabled event_api_key">
-                      <label class="form-control-label string optional disabled" for="event_api_key"
-                        >Event API Key</label
-                      ><input
-                        class="form-control string optional disabled"
-                        disabled="disabled"
-                        type="text"
-                        id="event_api_key"
-                      />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group string optional event_phototap_api_key">
-                      <label class="form-control-label string optional" for="event_phototap_api_key"
-                        >PhotoTap API Key</label
-                      ><input
-                        class="form-control string optional"
-                        type="text"
-                        id="event_phototap_api_key"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
-            <button class="btn btn-primary">{{ confirmButtonName }}</button>
-            <router-link class="btn" :to="{ name: 'EventList' }">Cancel</router-link>
-          </form>
+            <div class="row">
+              <!-- Event API Key -->
+              <div class="col">
+                <div class="form-group">
+                  <label for="eventApiKey">
+                    Event API Key
+                  </label>
+                  <input
+                    class="form-control"
+                    disabled="disabled"
+                    type="text"
+                    id="eventApiKey"
+                    v-model="inputEventApiKey"
+                  />
+                </div>
+              </div>
+              <!-- PhotoTap API Key -->
+              <div class="col">
+                <div class="form-group">
+                  <label for="phototapApiKey">
+                    PhotoTap API Key
+                  </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="phototapApiKey"
+                    v-model="inputPhototapApiKey"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+        <!-- actions -->
+        <button type="submit" class="btn btn-primary">{{ confirmButtonText }}</button>
+        <router-link class="btn" :to="{ name: 'EventList' }">Cancel</router-link>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { formValidationMixin } from '@/mixins/form-validation-mixin';
+import { required, email } from 'vuelidate/lib/validators';
 
 export default {
   name: 'EventCreateUpdate',
-  mixins: [formValidationMixin],
   props: {
     id: { type: [String, Number] },
   },
@@ -161,42 +197,78 @@ export default {
     return {
       formTitle: '',
       confirmButtonText: '',
-      inputLabel: '',
-      inputEvent: '',
+      name: 'My Event XX',
+      contactEmail: '',
+      startTime: '2020-04-19T12:00:00',
+      endTime: '2020-04-19T18:30:00',
+      location: 'XXX',
+      inputOptInPage: '',
+      account: '',
+      inputAttendeeLimit: '',
+      inputEventApiKey: '',
+      inputPhototapApiKey: '',
       item: null,
     };
   },
-  components: {},
-  created() {
-    this.setCurrentHeader('...');
-    this.fetchEvents();
+  validations: {
+    name: { required },
+    contactEmail: { email },
+    startTime: { required },
+    endTime: { required },
+    location: { required },
+    account: {},
+  },
+  mounted() {
     if (this.isEditMode) {
-      this.formTitle = 'Edit Device';
+      this.formTitle = 'Edit Event';
       this.confirmButtonText = 'Update';
-      // [_review_] // Define what to do id is invalid or not exists
-      this.fetchItem(this.id).then(() => {
-        this.setCurrentHeader(`Total: ${this.itemsTotal}`);
 
-        this.item = this.$store.state.device.currentItem;
-        this.inputLabel = this.item.label;
-        this.inputEvent = this.item.event ? this.item.event.id : '';
-      });
+      (async () => {
+        try {
+          // [_review_] Define what to do when id is invalid or not exists
+          this.item = await this.fetchItem(this.id);
+
+          this.formTitle = `Edit ${this.item.name}`;
+          this.name = this.item.name;
+          this.contactEmail = this.item.contactEmail;
+          this.startTime = this.$options.filters.toDatetimeLocal(this.item.startTime);
+          this.endTime = this.$options.filters.toDatetimeLocal(this.item.endTime);
+          this.location = this.item.location;
+        } catch (error) {
+          console.log('[UpdateItem - mounted()] There was a problem processing your item.', error);
+        }
+      })();
     } else {
-      this.formTitle = 'New Device';
+      this.formTitle = 'New Event';
       this.confirmButtonText = 'Create';
+      // [_review_] Improve the way to set itemsTotal
+      this.$store
+        .dispatch('event/fetchItems')
+        .then(() => {
+          this.setCurrentHeader(`Total: ${this.itemsTotal}`);
+        })
+        .catch((error) => {
+          console.log('[CreateItem - mounted()] There was a problem processing your item.', error);
+        });
     }
   },
   computed: {
     isEditMode() {
       return typeof this.id !== 'undefined';
     },
-    ...mapState('device', {
+    validationMessage() {
+      return {
+        requiredField: 'This field is required.',
+        email: 'Please enter a valid email address.',
+      };
+    },
+    ...mapState('event', {
       itemsTotal: (state) => state.itemsTotal,
       resourceName: (state) => state.resourceName,
     }),
-    ...mapState('event', {
+    /* ...mapState('event', {
       events: (state) => state.items,
-    }),
+    }), */
   },
   methods: {
     setCurrentHeader(subtitle, title = this.resourceName) {
@@ -206,51 +278,44 @@ export default {
       });
     },
     submitForm() {
-      this.formErrors = {};
-      // validate label
-      this.inputLabel = this.inputLabel.trim();
-      if (this.inputLabel === '') this.formErrors.label = 'Label is required.';
+      this.$v.$touch();
 
       // submit if valid
-      if (this.isValidForm) {
+      if (!this.$v.$invalid) {
         if (!this.item) this.item = {};
 
-        this.item.label = this.inputLabel;
-        this.item.event = this.events.find((element) => element.id === this.inputEvent);
+        const startTimeParsed = new Date(this.startTime);
+        const endTimeParsed = new Date(this.endTime);
 
-        if (this.item.id) this.updateItem(this.item);
-        else this.createItem(this.item);
+        this.item.metadata = '__details';
+        this.item.name = this.name;
+        this.item.contactEmail = this.contactEmail;
+        this.item.startTime = startTimeParsed.toISOString();
+        this.item.endTime = endTimeParsed.toISOString();
+        this.item.location = this.location;
+
+        this.createOrUpdateItem(this.item);
       }
     },
-    createItem(item) {
+    createOrUpdateItem(item) {
+      const keyMessage = item.id ? 'updated' : 'added';
       this.$store
-        .dispatch('device/createItem', item)
-        .then(() => {
-          console.log('Device created!!', item);
-          this.$router.push({ name: 'DeviceList' });
+        .dispatch('event/createOrUpdateItem', item)
+        .then((data) => {
+          this.$router.push({
+            name: 'EventDetails',
+            params: { id: data.id, actionMessage: `Event successfully ${keyMessage}!` },
+          });
         })
         .catch((error) => {
-          console.log('There was a problem creating your item', error);
-        });
-    },
-    updateItem(item) {
-      this.$store
-        .dispatch('device/updateItem', item)
-        .then(() => {
-          console.log('Device updated!!', item);
-          this.$router.push({ name: 'DeviceList' });
-        })
-        .catch((error) => {
-          console.log('There was a problem updating your item', error);
+          console.log('[createOrUpdateItem] There was a problem processing your item.', error);
         });
     },
     ...mapActions({
       setHeader: 'setHeader',
-      fetchItem: 'device/fetchItem',
-      fetchEvents: 'event/fetchItems',
+      fetchItem: 'event/fetchItem',
+      /* fetchAccounts: 'account/fetchItems', */
     }),
   },
 };
 </script>
-
-<style scoped></style>

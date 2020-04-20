@@ -27,10 +27,10 @@
                 <i class="fas fa-pencil-alt mr-2"></i>
                 Edit
               </router-link>
-              <router-link class="btn btn-sm btn-primary" to="#">
+              <button class="btn btn-sm btn-primary" @click.prevent="removeItem(item.id)">
                 <i class="fas fa-times mr-2"></i>
                 Delete
-              </router-link>
+              </button>
             </div>
           </div>
         </div>
@@ -41,6 +41,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import Swal from 'sweetalert2';
 import TableHead from '@/components/_ui/TableHead.vue';
 import TableBodyNoData from '@/components/_ui/TableBodyNoData.vue';
 
@@ -87,7 +88,27 @@ export default {
         data: { title, subtitle },
       });
     },
-    ...mapActions({ setHeader: 'setHeader', fetchItems: 'event/fetchItems' }),
+    removeItem(id) {
+      const result = Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will delete all event data and cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0062cc',
+        cancelButtonColor: '#b2b3b3',
+        confirmButtonText: 'Yes, delete it!',
+      }).then(async (result) => {
+        if (result.value) {
+          await this.deleteItem(id);
+          Swal.fire('Deleted!', 'The element has been deleted.', 'success');
+        }
+      });
+    },
+    ...mapActions({
+      setHeader: 'setHeader',
+      fetchItems: 'event/fetchItems',
+      deleteItem: 'event/deleteItem',
+    }),
   },
 };
 </script>

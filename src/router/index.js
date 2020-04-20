@@ -175,16 +175,18 @@ const routes = [
   // event - details
   {
     path: `${routePaths.event}/:id`,
+    name: 'EventDetails',
     component: EventDetails,
+    props: true,
     meta: {
       auth: false,
     },
-    props: true,
     children: [
       {
         path: '',
         name: 'EventOverview',
         component: EventOverview,
+        props: true,
         meta: {
           auth: false,
         },
@@ -239,10 +241,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */ '../views/About.vue'
-      ),
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
     meta: {
       auth: false,
     },
@@ -259,12 +258,7 @@ router.beforeEach(async (to, from, next) => {
   const SIGNIN = '/signin';
   const reqLogin = to.meta && to.meta.auth;
   const loggedIn = await window.$app.isLoggedIn();
-  if (
-    loggedIn &&
-    to.query &&
-    to.query.next &&
-    to.query.next !== to.path
-  ) {
+  if (loggedIn && to.query && to.query.next && to.query.next !== to.path) {
     return next({
       path: to.query.next,
     });
@@ -275,12 +269,7 @@ router.beforeEach(async (to, from, next) => {
   if (!reqLogin) {
     return next();
   }
-  if (
-    loggedIn &&
-    from.query &&
-    from.query.next &&
-    from.query.next !== to.path
-  ) {
+  if (loggedIn && from.query && from.query.next && from.query.next !== to.path) {
     return next({
       path: from.query.next,
     });

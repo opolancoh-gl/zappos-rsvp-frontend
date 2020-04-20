@@ -10,6 +10,9 @@ export default {
   props: {
     id: { type: [String, Number] },
   },
+  created() {
+    console.log('EventDetails created');
+  },
   mounted() {
     console.log('EventDetails mounted');
     (async () => {
