@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import * as application from '@/store/modules/application';
+import * as HeaderModule from '@/store/modules/header';
 import { getStateManagement } from '@/store/modules/crud-module';
 
 import { DataProvider } from '@/services-layer';
@@ -34,5 +35,6 @@ export default new Vuex.Store({
     application,
     account: getStateManagement('accounts'),
     user: getStateManagement('users'),
+    header: HeaderModule,
   },
 });

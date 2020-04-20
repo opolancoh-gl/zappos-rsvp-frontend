@@ -1,21 +1,28 @@
-import Header from '@/components/_ui/Header.vue';
-
 export default {
   props: {
     id: { type: [String, Number] },
   },
   data() {
     return {
-      title: null,
-      subTitle: null,
-      formTitle: null,
-      item: null,
-      confirmButtonName: null,
+      event: {
+        name: '',
+        email: '',
+        startTime: '',
+        location: '',
+        endTime: '',
+        attendeeLimit: 1,
+        closeOptInPage: false,
+        photoAPIKey: '',
+      },
+      confirmButtonName: 'Create Event',
       accounts: [],
     };
   },
-  components: {
-    Header,
+  components: {},
+  methods: {
+    onSubmit() {
+      console.log(this.event);
+    },
   },
   created() {
     /*
@@ -38,7 +45,10 @@ export default {
   },
   computed: {
     isEditMode() {
-      return Object.prototype.hasOwnProperty.call(this.$route.params, 'id');
+      return Object.prototype.hasOwnProperty.call(
+        this.$route.params,
+        'id',
+      );
     },
   },
 };

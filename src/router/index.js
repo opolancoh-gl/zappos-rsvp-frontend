@@ -257,36 +257,23 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   const SIGNIN = '/signin';
-  const reqLogin = to.meta && to.meta.auth;
   const loggedIn = await window.$app.isLoggedIn();
+  if (!to.path.startsWith('/events/')) {
+    router.app.$store.dispatch('header/setHeaderSeubmenuItems', []);
+  }
   if (
-    loggedIn &&
-    to.query &&
-    to.query.next &&
-    to.query.next !== to.path
+    to.matched.some((record) => record.meta.auth) &&
+    !loggedIn
   ) {
-    return next({
-      path: to.query.next,
-    });
-  }
-  if (to.path === SIGNIN) {
-    return next();
-  }
-  if (!reqLogin) {
-    return next();
+    return next({ path: `${SIGNIN}?next=${to.path}` });
   }
   if (
-    loggedIn &&
     from.query &&
-    from.query.next &&
     from.query.next !== to.path
   ) {
     return next({
       path: from.query.next,
     });
-  }
-  if (!loggedIn) {
-    return next({ path: `${SIGNIN}?next=${to.path}` });
   }
   return next();
 });

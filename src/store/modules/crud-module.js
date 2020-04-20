@@ -43,16 +43,21 @@ export function getStateManagement(
   if (!dataProviderDeleter) {
     DATA_PROVIDER_DELETER = `delete${sCapitalName}`;
   }
-  const MUTATION_NAME = `UPDATE_${resourceName.toUpperCase()}_LIST`;
+  const ITEMS_MUTATION_NAME = `UPDATE_${resourceName.toUpperCase()}_LIST`;
+  const ALERT_MSG_MUTATION_NAME = `UPDATE_ALERT_MSG_${resourceName.toUpperCase()}`;
   const GETTER_NAME = `get${capitalName}`;
   return {
     namespaced: true,
     state: {
       items: [],
+      lastAlertMessage: '',
     },
     mutations: {
-      [MUTATION_NAME]: (state, items) => {
+      [ITEMS_MUTATION_NAME]: (state, items) => {
         state.items = items;
+      },
+      [ALERT_MSG_MUTATION_NAME]: (state, message) => {
+        state.lastAlertMessage = message;
       },
     },
     actions: {
@@ -64,7 +69,10 @@ export function getStateManagement(
       },
       async getItemsFromAPi({ commit }) {
         const items = await DataProvider.getInstance()[DATA_PROVIDER_GETTER]();
-        commit(MUTATION_NAME, items);
+        commit(ITEMS_MUTATION_NAME, items);
+      },
+      setLastAlertMessage({ commit }, message) {
+        commit(ALERT_MSG_MUTATION_NAME, message);
       },
       async updateItem(_state, dataObject) {
         const result = await DataProvider.getInstance()[DATA_PROVIDER_UPDATER](
@@ -82,6 +90,7 @@ export function getStateManagement(
 
     getters: {
       [GETTER_NAME]: ({ items }) => items,
+      getLastAlertMessage: ({ lastAlertMessage }) => lastAlertMessage,
     },
   };
 }

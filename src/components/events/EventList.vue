@@ -55,9 +55,9 @@ export default {
   //   this.items = store.events;
   // },
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', {
+    this.$store.dispatch('header/setInfo', {
       title: 'Events',
-      subtitle: 'Total: 0',
+      subtitle: 'You have $[event.items.length] event',
     });
   },
 };

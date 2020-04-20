@@ -1,0 +1,61 @@
+@import '~bootstrap/scss/bootstrap';
+
+.Header {
+  position: relative;
+  padding: 4rem 0 6rem;
+  color: white;
+  background-color: $primary;
+
+  &-wave {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+  }
+
+  &-title {
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    line-height: 1;
+    font-weight: bold;
+  }
+
+  &-subtitle {
+    margin-top: 0;
+    font-size: 1.2rem;
+    font-weight: 100;
+    line-height: 1.2;
+  }
+
+  &-nav {
+    border-bottom: none;
+  }
+
+  &-navLabel {
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  &.isExpanded {
+    padding: 64px 0 96px;
+    padding: 4rem 0 6rem;
+
+    .Header {
+      &-title {
+        margin-bottom: 8px;
+        margin-bottom: 0.5rem;
+        font-size: 40px;
+        font-size: 2.5rem;
+        line-height: 1;
+        font-weight: bold;
+      }
+      &-subtitle {
+        margin-top: 0;
+        font-size: 19.2px;
+        font-size: 1.2rem;
+        font-weight: 100;
+        line-height: 1.2;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

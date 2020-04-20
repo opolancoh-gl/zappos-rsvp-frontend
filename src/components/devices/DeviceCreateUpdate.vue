@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header :title="title" :subTitle="subTitle" />
     <div class="container my-4">
       <div class="card">
         <div class="card-header">{{ formTitle }}</div>
@@ -28,7 +27,7 @@
 </template>
 
 <script>
-import Header from '@/components/_ui/Header.vue';
+// import Header from '@/components/_ui/Header.vue';
 // import store from '@/store/data';
 
 export default {
@@ -46,7 +45,6 @@ export default {
     };
   },
   components: {
-    Header,
   },
   created() {
     /*

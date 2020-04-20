@@ -1,57 +1,72 @@
 <template>
-  <div class="card mb-4">
-    <div class="card-header d-flex justify-content-between">
-      <div class="align-self-center">Users</div>
-      <router-link
-        class="btn btn-sm"
-        :to="{ name: 'UserCreate' }"
+  <div>
+    <div class="alert alert-success " v-if="lastUsersAlertMessage">
+      {{ lastUsersAlertMessage }}
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
       >
-        <i class="fas fa-plus"></i>
-      </router-link>
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-    <div class="list-group list-group-flush">
+    <div class="card mb-4">
       <div
-        class="list-group-item"
-        v-for="user in users"
-        :key="user.id"
+        class="card-header d-flex justify-content-between"
       >
-        <div class="row">
-          <div class="col align-self-center">
-            <div class="media">
-              <i
-                class="far fa-2x fa-user-circle ml-2 mr-4 text-muted align-self-center"
-              ></i>
-              <div class="media-body align-self-center">
-                <router-link
-                  :to="{
-                    name: 'UserDetails',
-                    params: { id: user.id },
-                  }"
-                >
-                  {{ user.name }}
-                  <small class="d-block">{{
-                    user.email
-                  }}</small>
-                </router-link>
+        <div class="align-self-center">Users</div>
+        <router-link
+          class="btn btn-sm"
+          :to="{ name: 'UserCreate' }"
+        >
+          <i class="fas fa-plus"></i>
+        </router-link>
+      </div>
+      <div class="list-group list-group-flush">
+        <div
+          class="list-group-item"
+          v-for="user in users"
+          :key="user.id"
+        >
+          <div class="row">
+            <div class="col align-self-center">
+              <div class="media">
+                <i
+                  class="far fa-2x fa-user-circle ml-2 mr-4 text-muted align-self-center"
+                ></i>
+                <div class="media-body align-self-center">
+                  <router-link
+                    :to="{
+                      name: 'UserDetails',
+                      params: { id: user.id },
+                    }"
+                  >
+                    {{ user.name }}
+                    <small class="d-block">{{
+                      user.email
+                    }}</small>
+                  </router-link>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col text-right">
-            <router-link
-              class="btn btn-sm"
-              :to="{
-                name: 'UserUpdate',
-                params: { id: user.id },
-              }"
-            >
-              <i class="fas fa-pencil-alt"></i>
-            </router-link>
-            <button
-              class="btn btn-sm"
-              @click.prevent="removeUser(user)"
-            >
-              <i class="fas fa-times"></i>
-            </button>
+            <div class="col text-right">
+              <router-link
+                class="btn btn-sm"
+                :to="{
+                  name: 'UserUpdate',
+                  params: { id: user.id },
+                }"
+              >
+                <i class="fas fa-pencil-alt"></i>
+              </router-link>
+              <button
+                class="btn btn-sm"
+                @click.prevent="removeUser(user)"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -69,15 +84,19 @@ export default {
     return { items: [], itemsCount: '' };
   },
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', {
+    this.$store.dispatch('header/setInfo', {
       title: 'Users',
-      subtitle: 'List',
+      subtitle: '$[user.items.length] users',
     });
     this.getUsers();
+    setTimeout(() => {
+      this.updateAlertMessage('');
+    }, 5000);
   },
   computed: {
     ...mapGetters({
       users: 'user/getUsers',
+      lastUsersAlertMessage: 'user/getLastAlertMessage',
     }),
   },
   methods: {
@@ -104,6 +123,7 @@ export default {
     ...mapActions({
       getUsers: 'user/getItemsFromAPi',
       deleteUser: 'user/deleteItem',
+      updateAlertMessage: 'user/setLastAlertMessage',
     }),
   },
 };

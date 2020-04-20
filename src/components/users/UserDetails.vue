@@ -53,7 +53,7 @@ export default {
     }),
   },
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', {
+    this.$store.dispatch('header/setInfo', {
       title: 'Users',
       subtitle: 'Details',
     });
@@ -61,18 +61,18 @@ export default {
       this.userInfo = this.user;
     }
     if (!this.users.length) {
-      this.updateUsers().then(() => {
-        this.updateUser();
+      this.getUsers().then(() => {
+        this.updateUserInformation();
       });
     } else {
-      this.updateUser();
+      this.updateUserInformation();
     }
   },
   methods: {
     ...mapActions({
       getUsers: 'user/getItemsFromAPi',
     }),
-    updateUser() {
+    updateUserInformation() {
       const uid = this.user ? this.user.id : this.$route.params.id;
       const users = this.users.filter((userInfo) => userInfo.id === uid);
       if (users.length > 0) {

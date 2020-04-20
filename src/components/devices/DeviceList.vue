@@ -46,7 +46,7 @@ export default {
     // this.items = store.devices;
   },
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', {
+    this.$store.dispatch('header/setInfo', {
       title: 'Devices',
       subtitle: 'Total: 0',
     });

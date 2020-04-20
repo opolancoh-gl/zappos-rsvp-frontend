@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header :title="title" :subTitle="subTitle" />
     <div class="container my-4">
       <div class="card">
         <div class="card-header">Device</div>
@@ -25,7 +24,7 @@
 </template>
 
 <script>
-import Header from '@/components/_ui/Header.vue';
+// import Header from '@/components/_ui/Header.vue';
 
 export default {
   data() {
@@ -36,7 +35,6 @@ export default {
     };
   },
   components: {
-    Header,
   },
   mounted() {
     /* axios

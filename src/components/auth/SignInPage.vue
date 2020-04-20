@@ -2,9 +2,18 @@
   <div>
     <div class="text-center">
       <div class="sign-in" id="clearance">
-        <form class="form-signin" @submit.prevent="onSubmit">
-          <div novalidate="novalidate" class="simple_form session" method="post">
-            <div class="form-group email required session_email mb-3">
+        <form
+          class="form-signin"
+          @submit.prevent="onSubmit"
+        >
+          <div
+            novalidate="novalidate"
+            class="simple_form session"
+            method="post"
+          >
+            <div
+              class="form-group email required session_email mb-3"
+            >
               <input
                 class="form-control string email required form-control-lg"
                 :class="{ 'is-invalid': $v.email.$error }"
@@ -14,10 +23,14 @@
                 v-model="email"
               />
             </div>
-            <div class="form-group password required session_password mb-3">
+            <div
+              class="form-group password required session_password mb-3"
+            >
               <input
                 class="form-control password required form-control-lg"
-                :class="{ 'is-invalid': $v.password.$error }"
+                :class="{
+                  'is-invalid': $v.password.$error,
+                }"
                 placeholder="Password"
                 type="password"
                 id="session_password"
@@ -47,6 +60,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators';
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -67,7 +81,9 @@ export default {
   },
   components: {},
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', { title: 'Sign In' });
+    this.$store.dispatch('header/setInfo', {
+      title: 'Sign In',
+    });
   },
   methods: {
     cleanData() {
@@ -96,9 +112,13 @@ export default {
       });
       if (resp) {
         this.cleanData();
-        this.$router.push('/');
+        this.$router.push({ name: 'UserList' });
       } else {
-        alert('Auth failed');
+        Swal.fire(
+          'Log-In failed',
+          'Something went wrong with the authentication process.',
+          'error',
+        );
       }
     },
   },

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Two Seconds to verify the code.
-const VERIFICATION_DELAY = 2000;
+const VERIFICATION_DELAY = 500;
 
 const STATUS_OK = 200;
 const STATUS_UNAUTHORIZED = 401;
@@ -47,7 +47,7 @@ export class DataProvider {
           resolve(resp.status === STATUS_OK);
         })
         .catch((err) => {
-          window.localStorage.setItem('tkn', null);
+          window.localStorage.removeItem('tkn');
           if (err.response && err.response.status === STATUS_UNAUTHORIZED) {
             resolve(false);
           } else {

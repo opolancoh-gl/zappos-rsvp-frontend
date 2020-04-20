@@ -217,7 +217,7 @@ export default {
     this.formTitle = this.isEditMode
       ? 'Edit User'
       : 'New User';
-    this.$store.dispatch('application/setHeaderInfo', {
+    this.$store.dispatch('header/setInfo', {
       title: 'Users',
       subtitle: this.currentFormAction,
     });
@@ -264,7 +264,8 @@ export default {
         this.submitStatus = 'PENDING';
         this.saveFormInfo()
           .then(() => {
-            this.submitStatus = 'LOGGED_IN';
+            this.submitStatus = 'SAVED';
+            this.updateAlertMessage('User successfully added!');
           })
           .catch(() => {
             this.submitStatus = 'ERROR';
@@ -295,6 +296,7 @@ export default {
       updateUser: 'user/updateItem',
       createUser: 'user/createItem',
       deleteUser: 'user/deleteItem',
+      updateAlertMessage: 'user/setLastAlertMessage',
     }),
   },
 };

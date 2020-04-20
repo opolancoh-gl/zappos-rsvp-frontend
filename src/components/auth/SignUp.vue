@@ -69,7 +69,7 @@ export default {
   },
   components: {},
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', { title: 'Sign Up' });
+    this.$store.dispatch('header/setInfo', { title: 'Sign Up' });
   },
   methods: {
     cleanData() {
