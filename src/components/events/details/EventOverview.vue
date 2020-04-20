@@ -1,12 +1,14 @@
 <template>
   <div>
+    <div v-if="actionMessage" class="alert alert-success ">{{ actionMessage }}</div>
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between">
         <div class="align-self-center">Event Details</div>
         <div>
           <router-link
+            v-if="item.id"
             class="btn btn-sm btn-primary"
-            :to="{ name: 'EventUpdate', params: { id: 1 } }"
+            :to="{ name: 'EventUpdate', params: { id: item.id } }"
           >
             <i class="far fa-edit mr-1"></i>
             Edit
@@ -21,9 +23,13 @@
       </div>
       <div class="card-body text-center">
         <div class="row">
-          <div class="col"><strong class="d-block">Start Time</strong>02/25/20 at 2:00pm</div>
-          <div class="col"><strong class="d-block">End Time</strong>02/27/20 at 2:50pm</div>
-          <div class="col"><strong class="d-block">Location:</strong>San Francisco</div>
+          <div class="col">
+            <strong class="d-block">Start Time</strong>{{ item.startTime | datetimeAtShort }}
+          </div>
+          <div class="col">
+            <strong class="d-block">End Time</strong>{{ item.endTime | datetimeAtShort }}
+          </div>
+          <div class="col"><strong class="d-block">Location:</strong>{{ item.location }}</div>
         </div>
       </div>
     </div>
@@ -140,9 +146,34 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 export default {
-  data() {
-    return { item: {} };
+  name: 'EventOverview',
+  props: {
+    actionMessage: { type: String },
+  },
+  created() {
+    console.log('EventOverview created');
+  },
+  mounted() {
+    console.log('EventOverview mounted');
+    (async () => {
+      try {
+        // [_review_] // Define what to do id is invalid or not exists
+        this.fetchItem(this.$route.params.id);
+      } catch (error) {
+        console.log('[Exception-EventDetails]', error);
+      }
+    })();
+  },
+  computed: {
+    ...mapState('event', {
+      item: (state) => state.currentItem,
+    }),
+  },
+  methods: {
+    ...mapActions({ fetchItem: 'event/fetchItem' }),
   },
 };
 </script>

@@ -1,13 +1,8 @@
 <template>
   <div>
     <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between">
-        <div class="align-self-center">Events</div>
-        <router-link class="btn btn-sm btn-primary" :to="{ name: 'EventCreate' }">
-          <i class="fas fa-plus mr-2"></i>
-          Add
-        </router-link>
-      </div>
+      <TableHead :name="title" :links="tableHeadLinks" />
+      <TableBodyNoData v-if="items.length === 0" />
       <div class="list-group list-group-flush">
         <div class="list-group-item" v-for="item in items" :key="item.id">
           <div class="row">
@@ -16,11 +11,11 @@
                 <i class="far fa-calendar-alt fa-2x ml-2 mr-4 text-primary align-self-center"></i>
                 <div class="media-body align-self-center">
                   <router-link :to="{ name: 'EventOverview', params: { id: item.id } }">
-                    {{
-                    item.name
-                    }}
+                    {{ item.name }}
                   </router-link>
-                  <small class="d-block">{{ item.description }}</small>
+                  <small class="d-block"
+                    >{{ item.startTime | datetimeAtShort }} - {{ item.location }}</small
+                  >
                 </div>
               </div>
             </div>
@@ -32,10 +27,10 @@
                 <i class="fas fa-pencil-alt mr-2"></i>
                 Edit
               </router-link>
-              <router-link class="btn btn-sm btn-primary" to="#">
+              <button class="btn btn-sm btn-primary" @click.prevent="removeItem(item.id)">
                 <i class="fas fa-times mr-2"></i>
                 Delete
-              </router-link>
+              </button>
             </div>
           </div>
         </div>
@@ -45,20 +40,75 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+import Swal from 'sweetalert2';
+import TableHead from '@/components/_ui/TableHead.vue';
+import TableBodyNoData from '@/components/_ui/TableBodyNoData.vue';
+
 export default {
+  name: 'EventList',
+  components: { TableHead, TableBodyNoData },
   data() {
     return {
-      items: [],
+      title: 'Events',
+      tableHeadLinks: [
+        {
+          name: 'Add',
+          routeName: 'EventCreate',
+          class: 'btn-primary',
+          icon: 'fa-plus',
+        },
+      ],
     };
   },
-  // created() {
-  //   this.items = store.events;
-  // },
+  created() {
+    this.setCurrentHeader('...');
+  },
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', {
-      title: 'Events',
-      subtitle: 'Total: 0',
-    });
+    (async () => {
+      try {
+        await this.fetchItems();
+        this.setCurrentHeader(`Total: ${this.itemsTotal}`);
+      } catch (error) {
+        console.log('[Exception-EventList]', error);
+      }
+    })();
+  },
+  computed: {
+    ...mapState('event', {
+      items: (state) => state.items,
+      itemsTotal: (state) => state.itemsTotal,
+      resourceName: (state) => state.resourceName,
+    }),
+  },
+  methods: {
+    setCurrentHeader(subtitle, title = this.resourceName) {
+      this.setHeader({
+        name: 'HeaderDefault',
+        data: { title, subtitle },
+      });
+    },
+    removeItem(id) {
+      const result = Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will delete all event data and cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0062cc',
+        cancelButtonColor: '#b2b3b3',
+        confirmButtonText: 'Yes, delete it!',
+      }).then(async (result) => {
+        if (result.value) {
+          await this.deleteItem(id);
+          Swal.fire('Deleted!', 'The element has been deleted.', 'success');
+        }
+      });
+    },
+    ...mapActions({
+      setHeader: 'setHeader',
+      fetchItems: 'event/fetchItems',
+      deleteItem: 'event/deleteItem',
+    }),
   },
 };
 </script>
