@@ -50,6 +50,8 @@ export default new Vuex.Store({
     application,
     device,
     event,
+    organization: getStateManagement('organizations'),
+    attendee: getStateManagement('attendees'),
     account: getStateManagement('accounts'),
     user: getStateManagement('users'),
   },

@@ -62,7 +62,7 @@ export function getStateManagement(
         );
         return result.data.data;
       },
-      async getItemsFromAPi({ commit }) {
+      async getItemsFromAPI({ commit }) {
         const items = await DataProvider.getInstance()[DATA_PROVIDER_GETTER]();
         commit(MUTATION_NAME, items);
       },

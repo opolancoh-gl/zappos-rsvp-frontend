@@ -290,8 +290,8 @@ export default {
       }
     },
     ...mapActions({
-      getAccounts: 'account/getItemsFromAPi',
-      getUsers: 'user/getItemsFromAPi',
+      getAccounts: 'account/getItemsFromAPI',
+      getUsers: 'user/getItemsFromAPI',
       updateUser: 'user/updateItem',
       createUser: 'user/createItem',
       deleteUser: 'user/deleteItem',

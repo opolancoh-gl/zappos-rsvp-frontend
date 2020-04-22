@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     async removeUser(user) {
-      const result = Swal.fire({
+      const result = await Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
         icon: 'warning',
@@ -103,7 +103,7 @@ export default {
       }
     },
     ...mapActions({
-      getUsers: 'user/getItemsFromAPi',
+      getUsers: 'user/getItemsFromAPI',
       deleteUser: 'user/deleteItem',
     }),
   },
