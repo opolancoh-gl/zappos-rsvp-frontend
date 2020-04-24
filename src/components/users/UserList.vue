@@ -69,10 +69,7 @@ export default {
     return { items: [], itemsCount: '' };
   },
   mounted() {
-    this.$store.dispatch('application/setHeaderInfo', {
-      title: 'Users',
-      subtitle: 'List',
-    });
+    this.updateHeaderInfo();
     this.getUsers();
   },
   computed: {
@@ -80,7 +77,19 @@ export default {
       users: 'user/getUsers',
     }),
   },
+  watch: {
+    users() {
+      this.updateHeaderInfo();
+    },
+  },
   methods: {
+    updateHeaderInfo() {
+      const count = this.users.length;
+      this.setHeader({
+        name: 'HeaderDefault',
+        data: { title: 'Users', subtitle: count ? `${count} users` : '...' },
+      });
+    },
     async removeUser(user) {
       const result = await Swal.fire({
         title: 'Are you sure?',
@@ -92,7 +101,6 @@ export default {
         confirmButtonText: 'Yes, delete it!',
       });
       if (result.value) {
-        console.log('yes');
         await this.deleteUser(user);
         await this.getUsers();
         Swal.fire(
@@ -105,6 +113,7 @@ export default {
     ...mapActions({
       getUsers: 'user/getItemsFromAPI',
       deleteUser: 'user/deleteItem',
+      setHeader: 'setHeader',
     }),
   },
 };
