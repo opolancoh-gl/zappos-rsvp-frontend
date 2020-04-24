@@ -1,8 +1,8 @@
 const RESOURCE_NAME = 'organizations';
 
 export default {
-  getOrganizations() {
-    return this.get(RESOURCE_NAME);
+  getOrganizations(query) {
+    return this.get(RESOURCE_NAME, query);
   },
 
   createOrganization(item) {

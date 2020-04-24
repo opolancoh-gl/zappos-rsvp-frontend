@@ -1,8 +1,8 @@
 const RESOURCE_NAME = 'accounts';
 
 export default {
-  getAccounts() {
-    return this.get(RESOURCE_NAME);
+  getAccounts(query) {
+    return this.get(RESOURCE_NAME, query);
   },
 
   createAccount() {

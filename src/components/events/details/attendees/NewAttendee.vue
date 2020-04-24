@@ -23,6 +23,7 @@
                     <abbr title="required">*</abbr></label
                   ><input
                     class="form-control string required"
+                    :class="{ 'is-invalid': $v.newAttendee.name.$error }"
                     type="text"
                     v-model="newAttendee.name"
                     name="attendee[person_attributes][name]"
@@ -165,6 +166,7 @@
 </template>
 
 <script>
+import { required, minLength } from 'vuelidate/lib/validators';
 import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
@@ -184,10 +186,19 @@ export default {
       },
     };
   },
+  validations: {
+    newAttendee: {
+      name: {
+        required,
+        minLength: minLength(4)
+      },
+    },
+  },
   async mounted() {
     try {
       await this.fetchEvent(this.$route.params.id);
       this.fetchOrganiaztions();
+      this.updateCurrentUser();
     } catch (error) {
       console.log('[Exception-EventDetails]', error);
     }
@@ -198,11 +209,16 @@ export default {
     }),
     ...mapState({
       event: ({ event }) => event.currentItem,
+      currentUser: (state) => state.me,
     }),
   },
   methods: {
     onSubmit() {
-      this.saveAttendee();
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        this.saveAttendee();
+      }
+      // */
     },
     async saveAttendee() {
       try {
@@ -213,6 +229,7 @@ export default {
           });
           this.newAttendee.organizationId = org.id;
         }
+        this.newAttendee.added_by = this.currentUser.id;
         await this.createAttendee(this.newAttendee);
       } catch (error) {
         console.log(error);
@@ -223,6 +240,7 @@ export default {
       fetchOrganiaztions: 'organization/getItemsFromAPI',
       createOrganization: 'organization/createItem',
       createAttendee: 'attendee/createItem',
+      updateCurrentUser: 'me',
     }),
   },
 };

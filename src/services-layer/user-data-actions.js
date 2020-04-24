@@ -1,17 +1,18 @@
+const RESOURCE_NAME = 'users';
 export default {
-  getUsers() {
-    return this.get('users');
+  getUsers(query) {
+    return this.get(RESOURCE_NAME, query);
   },
 
-  createUser(user) {
-    return this.post('users', user);
+  createUser(item) {
+    return this.post(RESOURCE_NAME, item);
   },
 
-  updateUser(user) {
-    return this.put('users', user);
+  updateUser(item) {
+    return this.put(RESOURCE_NAME, item);
   },
 
-  deleteUser(user) {
-    return this.delete('users', user);
+  deleteUser(item) {
+    return this.delete(RESOURCE_NAME, item);
   },
 };

@@ -204,6 +204,7 @@ export default {
   computed: {
     ...mapState({
       attendees: ({ attendee }) => attendee.items,
+      users: ({ user }) => user.items,
       currentEvent: ({ event }) => event.currentItem,
     }),
   },
@@ -269,6 +270,7 @@ export default {
       }
     },
     ...mapActions({
+      fetchUsers: 'user/getItemsFromAPI',
       fetchAttendees: 'attendee/getItemsFromAPI',
       deleteAttendee: 'attendee/deleteItem',
     }),

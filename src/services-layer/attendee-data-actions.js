@@ -1,8 +1,8 @@
 const RESOURCE_NAME = 'attendees';
 
 export default {
-  getAttendees() {
-    return this.get(RESOURCE_NAME);
+  getAttendees(query) {
+    return this.get(RESOURCE_NAME, query);
   },
 
   createAttendee(item) {
