@@ -18,7 +18,9 @@ import EventList from '@/components/events/EventList.vue';
 import EventCreateUpdate from '@/components/events/EventCreateUpdate.vue';
 import EventDetails from '@/components/events/details/EventDetails.vue';
 import EventOverview from '@/components/events/details/EventOverview.vue';
-import EventAccess from '@/components/events/details/EventAccess.vue';
+import EventAccessList from '@/components/events/details/EventAccessList.vue';
+import EventAccessCreateUpdate from '@/components/events/details/EventAccessCreateUpdate.vue';
+import EventAccessDetails from '@/components/events/details/EventAccessDetails.vue';
 import EventMessageCenter from '@/components/events/details/message-center/DetailsMessageCenter.vue';
 import EventAttendees from '@/components/events/details/EventAttendees.vue';
 import EventBlastCenter from '@/components/events/details/EventBlastCenter.vue';
@@ -177,7 +179,6 @@ const routes = [
   // event - details
   {
     path: `${routePaths.event}/:id`,
-    name: 'EventDetails',
     component: EventDetails,
     props: true,
     meta: {
@@ -195,8 +196,27 @@ const routes = [
       },
       {
         path: 'users',
-        name: 'EventAccess',
-        component: EventAccess,
+        name: 'EventAccessList',
+        component: EventAccessList,
+        props: true,
+        meta: {
+          auth: false,
+        },
+      },
+      {
+        path: 'users/new',
+        name: 'EventAccessCreateUpdate',
+        component: EventAccessCreateUpdate,
+        props: true,
+        meta: {
+          auth: false,
+        },
+      },
+      {
+        path: 'users/:userId',
+        name: 'EventAccessDetails',
+        component: EventAccessDetails,
+        props: true,
         meta: {
           auth: false,
         },
