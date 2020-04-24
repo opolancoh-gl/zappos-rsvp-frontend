@@ -266,11 +266,10 @@ export default {
       this.$store
         .dispatch('eventUser/createOrUpdateItem', item)
         .then((data) => {
-          /* this.$router.push({
-            name: 'EventDetails',
+          this.$router.push({
+            name: 'EventAccessList',
             params: { id: data.id, actionMessage: `Event successfully ${keyMessage}!` },
-          }); */
-          console.log(data);
+          });
         })
         .catch((error) => {
           console.log('[createOrUpdateItem] There was a problem processing your item.', error);

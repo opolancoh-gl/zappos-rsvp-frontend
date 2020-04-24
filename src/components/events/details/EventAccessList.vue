@@ -24,21 +24,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="list-group-item">
-            <div class="row">
-              <div class="col-2 align-self-center">
-                <a href="/events/1/users/2">User 1</a>
-              </div>
-              <div class="col align-self-center text-center">
-                <i class="fas fa-check text-success"></i>
-                <small class="ml-2">View Event</small>
-              </div>
-              <div class="col align-self-center text-center"></div>
-              <div class="col align-self-center text-center"></div>
-              <div class="col align-self-center text-center"></div>
-              <div class="col align-self-center text-center"></div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -116,8 +101,6 @@ export default {
     },
     ...mapState('eventUser', {
       items: (state) => state.items,
-      itemsTotal: (state) => state.itemsTotal,
-      resourceName: (state) => state.resourceName,
     }),
   },
   methods: {
