@@ -119,7 +119,12 @@
                     v-model="account"
                     :class="{ 'is-invalid': $v.account.$error }"
                   >
-                    <option value="" selected>Choose ...</option>
+                    <option value="" selected disabled>Choose ...</option>
+                    <option v-for="account in accounts"
+                      :key="account.id"
+                      :value="account.id" selected>
+                      {{account.name}}
+                    </option>
                   </select>
                   <div class="invalid-feedback">
                     {{ validationMessage.requiredField }}
@@ -218,26 +223,24 @@ export default {
     location: { required },
     account: {},
   },
-  mounted() {
+  async mounted() {
+    await this.fetchAccounts();
     if (this.isEditMode) {
       this.formTitle = 'Edit Event';
       this.confirmButtonText = 'Update';
+      try {
+        // [_review_] Define what to do when id is invalid or not exists
+        this.item = await this.fetchItem(this.id);
 
-      (async () => {
-        try {
-          // [_review_] Define what to do when id is invalid or not exists
-          this.item = await this.fetchItem(this.id);
-
-          this.formTitle = `Edit ${this.item.name}`;
-          this.name = this.item.name;
-          this.contactEmail = this.item.contactEmail;
-          this.startTime = this.$options.filters.toDatetimeLocal(this.item.startTime);
-          this.endTime = this.$options.filters.toDatetimeLocal(this.item.endTime);
-          this.location = this.item.location;
-        } catch (error) {
-          console.log('[UpdateItem - mounted()] There was a problem processing your item.', error);
-        }
-      })();
+        this.formTitle = `Edit ${this.item.name}`;
+        this.name = this.item.name;
+        this.contactEmail = this.item.contactEmail;
+        this.startTime = this.$options.filters.toDatetimeLocal(this.item.startTime);
+        this.endTime = this.$options.filters.toDatetimeLocal(this.item.endTime);
+        this.location = this.item.location;
+      } catch (error) {
+        console.log('[UpdateItem - mounted()] There was a problem processing your item.', error);
+      }
     } else {
       this.formTitle = 'New Event';
       this.confirmButtonText = 'Create';
@@ -262,9 +265,10 @@ export default {
         email: 'Please enter a valid email address.',
       };
     },
-    ...mapState('event', {
-      itemsTotal: (state) => state.itemsTotal,
-      resourceName: (state) => state.resourceName,
+    ...mapState({
+      accounts: ({ account }) => account.items,
+      itemsTotal: ({ event }) => event.itemsTotal,
+      resourceName: ({ event }) => event.resourceName,
     }),
     /* ...mapState('event', {
       events: (state) => state.items,
@@ -289,6 +293,7 @@ export default {
 
         this.item.metadata = '__details';
         this.item.name = this.name;
+        this.item.accountId = this.account;
         this.item.contactEmail = this.contactEmail;
         this.item.startTime = startTimeParsed.toISOString();
         this.item.endTime = endTimeParsed.toISOString();
@@ -312,6 +317,7 @@ export default {
         });
     },
     ...mapActions({
+      fetchAccounts: 'account/getItemsFromAPI',
       setHeader: 'setHeader',
       fetchItem: 'event/fetchItem',
       /* fetchAccounts: 'account/fetchItems', */

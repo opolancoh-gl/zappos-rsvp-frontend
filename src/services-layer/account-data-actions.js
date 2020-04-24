@@ -1,17 +1,19 @@
+const RESOURCE_NAME = 'accounts';
+
 export default {
-  getAccounts() {
-    return this.get('accounts');
+  getAccounts(query) {
+    return this.get(RESOURCE_NAME, query);
   },
 
   createAccount() {
-    return this.post('accounts');
+    return this.post(RESOURCE_NAME);
   },
 
-  updateAccount(account) {
-    return this.put('accounts', account);
+  updateAccount(item) {
+    return this.put(RESOURCE_NAME, item);
   },
 
-  deleteAccount(account) {
-    return this.delete('accounts', account);
+  deleteAccount(item) {
+    return this.delete(RESOURCE_NAME, item);
   },
 };

@@ -59,8 +59,8 @@ export class DataProvider {
     return sessionChecker;
   }
 
-  async get(resource, _query) {
-    const resp = await this.http.get(resource);
+  async get(resource, params) {
+    const resp = await this.http.get(resource, { params });
     if (resp.status === STATUS_OK) {
       return resp.data.data;
     }
@@ -80,6 +80,10 @@ export class DataProvider {
   async delete(resource, body, field = 'id') {
     const resp = await this.http.delete(`${resource}/${body[field]}`, body);
     return resp;
+  }
+
+  me() {
+    return this.get('/auth/me');
   }
 
   /**

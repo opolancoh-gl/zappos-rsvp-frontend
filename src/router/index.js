@@ -25,6 +25,8 @@ import EventMessageCenter from '@/components/events/details/message-center/Detai
 import EventAttendees from '@/components/events/details/EventAttendees.vue';
 import EventBlastCenter from '@/components/events/details/EventBlastCenter.vue';
 
+import NewAttendee from '@/components/events/details/attendees/NewAttendee.vue';
+
 import { uuidRE } from '@/utils/validation-utils';
 
 Vue.use(VueRouter);
@@ -232,7 +234,15 @@ const routes = [
         name: 'EventAttendees',
         component: EventAttendees,
         meta: {
-          auth: false,
+          auth: true,
+        },
+      },
+      {
+        path: 'attendees/new',
+        name: 'NewAttendee',
+        component: NewAttendee,
+        meta: {
+          auth: true,
         },
       },
       {

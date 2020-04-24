@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      getUsers: 'user/getItemsFromAPi',
+      getUsers: 'user/getItemsFromAPI',
     }),
     updateUser() {
       const uid = this.user ? this.user.id : this.$route.params.id;

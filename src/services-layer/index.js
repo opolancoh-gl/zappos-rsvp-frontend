@@ -1,5 +1,7 @@
 import UserDataActions from './user-data-actions';
+import AttendeeDataActions from './attendee-data-actions';
 import AccountDataActions from './account-data-actions';
+import OrganizationDataActions from './organization-data-actions';
 import { DataProvider as BaseDataProvider } from './data-provider';
 
 function prepareDataProvider(dataActionsContainer) {
@@ -15,5 +17,7 @@ function prepareDataProvider(dataActionsContainer) {
 
 prepareDataProvider(UserDataActions);
 prepareDataProvider(AccountDataActions);
+prepareDataProvider(AttendeeDataActions);
+prepareDataProvider(OrganizationDataActions);
 
 export const DataProvider = BaseDataProvider;

@@ -14,6 +14,7 @@ export default new Vuex.Store({
   state: {
     headerName: '',
     headerData: {},
+    me: null,
   },
   mutations: {
     SET_HEADER_NAME(state, payload) {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     SET_HEADER_DATA(state, payload) {
       state.headerData = payload;
+    },
+    SET_ME(state, me) {
+      state.me = me;
     },
   },
   actions: {
@@ -46,11 +50,20 @@ export default new Vuex.Store({
       if (state.headerName !== name) commit('SET_HEADER_NAME', name);
       commit('SET_HEADER_DATA', data);
     },
+    async me({ commit, state }) {
+      if (!state.me) {
+        const resp = await DataProvider.getInstance().me();
+        commit('SET_ME', resp);
+      }
+      return state.me;
+    },
   },
   modules: {
     application,
     device,
     event,
+    organization: getStateManagement('organizations'),
+    attendee: getStateManagement('attendees'),
     account: getStateManagement('accounts'),
     user: getStateManagement('users'),
     eventUser,
