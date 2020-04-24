@@ -1,18 +1,19 @@
-const RESOURCE_NAME = 'users';
+const RESOURCE_NAME = 'organizations';
+
 export default {
-  getUsers(query) {
+  getOrganizations(query) {
     return this.get(RESOURCE_NAME, query);
   },
 
-  createUser(item) {
+  createOrganization(item) {
     return this.post(RESOURCE_NAME, item);
   },
 
-  updateUser(item) {
+  updateOrganization(item) {
     return this.put(RESOURCE_NAME, item);
   },
 
-  deleteUser(item) {
+  deleteOrganization(item) {
     return this.delete(RESOURCE_NAME, item);
   },
 };

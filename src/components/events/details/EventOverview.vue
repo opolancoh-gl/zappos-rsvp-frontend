@@ -136,7 +136,7 @@
             <small class="d-block">TOTAL</small>
           </div>
           <div class="col">
-            <h4 class="mb-0 d-block">NaN%</h4>
+            <h4 class="mb-0 d-block">{{percent}}%</h4>
             <small class="d-block">PERCENT</small>
           </div>
         </div>
@@ -152,6 +152,11 @@ export default {
   name: 'EventOverview',
   props: {
     actionMessage: { type: String },
+  },
+  data() {
+    return {
+      percent: 0,
+    };
   },
   created() {
     console.log('EventOverview created');
