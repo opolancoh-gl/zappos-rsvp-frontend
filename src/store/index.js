@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import * as application from '@/store/modules/application';
 import * as device from '@/store/modules/device';
 import * as event from '@/store/modules/event';
+import * as eventUser from '@/store/modules/event-user';
 import { getStateManagement } from '@/store/modules/crud-module';
 
 import { DataProvider } from '@/services-layer';
@@ -52,5 +53,6 @@ export default new Vuex.Store({
     event,
     account: getStateManagement('accounts'),
     user: getStateManagement('users'),
+    eventUser,
   },
 });

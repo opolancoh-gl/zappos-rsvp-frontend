@@ -48,7 +48,7 @@ export default {
         {
           title: 'Access',
           icon: 'fa-lock',
-          targetRoute: { name: 'EventAccess', params: { id: this.id } },
+          targetRoute: { name: 'EventAccessList', params: { id: this.id } },
         },
         {
           title: 'Message Center',
