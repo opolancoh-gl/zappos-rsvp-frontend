@@ -2,13 +2,14 @@ import UserDataActions from './user-data-actions';
 import AttendeeDataActions from './attendee-data-actions';
 import AccountDataActions from './account-data-actions';
 import OrganizationDataActions from './organization-data-actions';
-import { DataProvider as BaseDataProvider } from './data-provider';
+import { DataProvider as BaseDataProvider, baseCrudGenerator } from './data-provider';
 
 function prepareDataProvider(dataActionsContainer) {
-  Object.keys(dataActionsContainer).reduce(
+  const baseCrud = baseCrudGenerator(dataActionsContainer);
+  Object.keys(baseCrud).reduce(
     (baseClass, methodName) => {
       baseClass.prototype[methodName] =
-        dataActionsContainer[methodName];
+      baseCrud[methodName];
       return baseClass;
     },
     BaseDataProvider,

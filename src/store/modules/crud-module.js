@@ -1,10 +1,6 @@
 import { singular } from 'pluralize';
-
 import { DataProvider } from '@/services-layer';
-
-function titleCase(str) {
-  return str[0].toUpperCase() + str.substring(1).toLowerCase();
-}
+import { titleCase } from '@/utils/text-utils';
 
 /**
  *
@@ -15,6 +11,7 @@ export function getStateManagement(
   resourceName,
   {
     dataProviderGetter,
+    dataProviderGetterOne,
     dataProviderUpdater,
     dataProviderCreator,
     dataProviderDeleter,
@@ -24,6 +21,8 @@ export function getStateManagement(
   const sCapitalName = titleCase(singular(resourceName));
   /** @type {String} name of module data getter */
   let DATA_PROVIDER_GETTER = dataProviderGetter;
+  /** @type {String} name of module data getter for one item */
+  let DATA_PROVIDER_GETTER_ONE = dataProviderGetterOne;
   /** @type {String} name of module data updater */
   let DATA_PROVIDER_UPDATER = dataProviderUpdater;
   /** @type {String} name of module data creator */
@@ -34,6 +33,9 @@ export function getStateManagement(
   if (!dataProviderGetter) {
     DATA_PROVIDER_GETTER = `get${capitalName}`;
   }
+  if (!dataProviderGetter) {
+    DATA_PROVIDER_GETTER_ONE = `get${sCapitalName}`;
+  }
   if (!dataProviderUpdater) {
     DATA_PROVIDER_UPDATER = `update${sCapitalName}`;
   }
@@ -43,7 +45,8 @@ export function getStateManagement(
   if (!dataProviderDeleter) {
     DATA_PROVIDER_DELETER = `delete${sCapitalName}`;
   }
-  const MUTATION_NAME = `UPDATE_${resourceName.toUpperCase()}_LIST`;
+  const MUTATION_LIST_NAME = `UPDATE_${resourceName.toUpperCase()}_LIST`;
+  const MUTATION_ITEM_NAME = `UPDATE_${resourceName.toUpperCase()}_ITEM`;
   const GETTER_NAME = `get${capitalName}`;
   return {
     namespaced: true,
@@ -51,8 +54,11 @@ export function getStateManagement(
       items: [],
     },
     mutations: {
-      [MUTATION_NAME]: (state, items) => {
+      [MUTATION_LIST_NAME]: (state, items) => {
         state.items = items;
+      },
+      [MUTATION_ITEM_NAME]: (state, item) => {
+        state.item = item;
       },
     },
     actions: {
@@ -64,7 +70,12 @@ export function getStateManagement(
       },
       async getItemsFromAPI({ commit }, query) {
         const items = await DataProvider.getInstance()[DATA_PROVIDER_GETTER](query);
-        commit(MUTATION_NAME, items);
+        commit(MUTATION_LIST_NAME, items);
+      },
+      async getItemFromAPI({ commit }, id) {
+        const item = await DataProvider.getInstance()[DATA_PROVIDER_GETTER_ONE](id);
+        commit(MUTATION_ITEM_NAME, item);
+        return item;
       },
       async updateItem(_state, dataObject) {
         const result = await DataProvider.getInstance()[DATA_PROVIDER_UPDATER](

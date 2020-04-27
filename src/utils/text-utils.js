@@ -1,10 +1,7 @@
 // useful code to be added to Vue instance properties
 
-export default Object.freeze({
-  reverseText(text) {
-    return text
-      .split('')
-      .reverse()
-      .join('');
-  },
-});
+export function titleCase(str) {
+  return (
+    str[0].toUpperCase() + str.substring(1).toLowerCase()
+  );
+}

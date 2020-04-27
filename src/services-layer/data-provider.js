@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { singular } from 'pluralize';
+import { titleCase } from '@/utils/text-utils';
 
 // Two Seconds to verify the code.
 const VERIFICATION_DELAY = 2000;
@@ -96,4 +98,40 @@ export class DataProvider {
     }
     return DataProvider.instance;
   }
+}
+
+export function baseCrudGenerator(dataActionsContainer) {
+  const RESOURCE_NAME = dataActionsContainer.resource;
+  const S_RESOURCE_NAME = singular(RESOURCE_NAME);
+  const T_RESOURCE_NAME = titleCase(RESOURCE_NAME);
+  const T_S_RESOURCE_NAME = titleCase(S_RESOURCE_NAME);
+  const baseCrud = {
+    [`get${T_S_RESOURCE_NAME}`]: function getOne(id, query) {
+      return this.get(`${RESOURCE_NAME}/${id}`, query);
+    },
+
+    [`get${T_S_RESOURCE_NAME}ById`]: function getById(id, query) {
+      return this.get(`${RESOURCE_NAME}/${id}`, query);
+    },
+
+    [`get${T_RESOURCE_NAME}`]: function getMany(query) {
+      return this.get(RESOURCE_NAME, query);
+    },
+
+    [`create${T_S_RESOURCE_NAME}`]: function create(item) {
+      return this.post(RESOURCE_NAME, item);
+    },
+
+    [`update${T_S_RESOURCE_NAME}`]: function update(item) {
+      return this.put(RESOURCE_NAME, item);
+    },
+
+    [`delete${T_S_RESOURCE_NAME}`]: function remove(item) {
+      return this.delete(RESOURCE_NAME, item);
+    },
+  };
+  return {
+    ...baseCrud,
+    ...dataActionsContainer,
+  };
 }
