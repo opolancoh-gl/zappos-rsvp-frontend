@@ -95,7 +95,6 @@ export default {
           icon: 'fa-plus',
         },
       ],
-      /* items: [], */
     };
   },
   created() {
@@ -108,19 +107,6 @@ export default {
     }),
   },
   methods: {
-    /* async loadData() {
-      this.items = await this.fetchItems(this.id);
-    }, */
-    getPermissionIcon(itemPermissions, currentPermission) {
-      const icon = itemPermissions.includes(currentPermission)
-        ? 'fa-check text-success'
-        : 'fa-times text-danger';
-      console.log('');
-      console.log('itemPermissions', itemPermissions);
-      console.log('currentPermission', currentPermission);
-      console.log('icon', icon);
-      return icon;
-    },
     ...mapActions({
       fetchItems: 'eventUser/fetchItems',
     }),

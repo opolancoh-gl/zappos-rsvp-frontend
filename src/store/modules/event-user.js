@@ -34,7 +34,6 @@ export const actions = {
     const result = await DataService.getUsers(id);
     const { data } = result.data;
     commit('SET_ITEMS', data);
-    console.log('fetchItems', data);
   },
   async fetchRemainingUsers({ commit }, id) {
     const result = await DataService.getRemainingUsers(id);
