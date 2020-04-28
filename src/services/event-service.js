@@ -7,16 +7,16 @@ export default {
     return http.get(`/${resourceName}`);
   },
   getById(id) {
-    return http.get(`/${resourceName}/${id}?metadata=__details`);
+    return http.get(`/${resourceName}/${id}`);
   },
   create(item) {
     return http.post(`/${resourceName}`, item);
   },
   update(item) {
-    return http.put(`/${resourceName}/${item.id}?metadata=__details`, item);
+    return http.put(`/${resourceName}/${item.id}`, item);
   },
   remove(id) {
-    return http.delete(`/${resourceName}/${id}?metadata=__details`, id);
+    return http.delete(`/${resourceName}/${id}`, id);
   },
   getUsers(id) {
     return http.get(`/${resourceName}/${id}/users`);
