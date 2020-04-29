@@ -206,7 +206,16 @@ const routes = [
       },
       {
         path: 'users/new',
-        name: 'EventAccessCreateUpdate',
+        name: 'EventAccessCreate',
+        component: EventAccessCreateUpdate,
+        props: true,
+        meta: {
+          auth: false,
+        },
+      },
+      {
+        path: 'users/:userId/edit',
+        name: 'EventAccessUpdate',
         component: EventAccessCreateUpdate,
         props: true,
         meta: {

@@ -262,13 +262,13 @@ export default {
       }
     },
     createOrUpdateItem(item) {
-      const keyMessage = item.id ? 'updated' : 'added';
+      const keyMessage = item.userId ? 'updated' : 'added';
       this.$store
         .dispatch('eventUser/createOrUpdateItem', item)
         .then((data) => {
           this.$router.push({
             name: 'EventAccessList',
-            params: { id: data.id, actionMessage: `Event successfully ${keyMessage}!` },
+            params: { id: data.id, actionMessage: `Event User successfully ${keyMessage}!` },
           });
         })
         .catch((error) => {
