@@ -26,6 +26,7 @@ import EventAttendees from '@/components/events/details/EventAttendees.vue';
 import EventBlastCenter from '@/components/events/details/EventBlastCenter.vue';
 
 import NewAttendee from '@/components/events/details/attendees/NewAttendee.vue';
+import ViewAttendee from '@/components/events/details/attendees/ViewAttendee.vue';
 
 import { uuidRE } from '@/utils/validation-utils';
 
@@ -178,7 +179,7 @@ const routes = [
   },
   // event - details
   {
-    path: `${routePaths.event}/:id`,
+    path: `${routePaths.event}/:id(${uuidRE.source})`,
     component: EventDetails,
     props: true,
     meta: {
@@ -240,6 +241,22 @@ const routes = [
       {
         path: 'attendees/new',
         name: 'NewAttendee',
+        component: NewAttendee,
+        meta: {
+          auth: true,
+        },
+      },
+      {
+        path: `attendees/:attendeeID(${uuidRE.source})`,
+        name: 'ViewAttendee',
+        component: ViewAttendee,
+        meta: {
+          auth: true,
+        },
+      },
+      {
+        path: `attendees/:attendeeID(${uuidRE.source})/edit`,
+        name: 'EditAttendee',
         component: NewAttendee,
         meta: {
           auth: true,
