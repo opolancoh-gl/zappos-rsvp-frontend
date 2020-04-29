@@ -90,7 +90,7 @@ export default {
       tableHeadLinks: [
         {
           name: 'Add',
-          routeName: 'EventAccessCreateUpdate',
+          routeName: 'EventAccessCreate',
           class: 'btn-primary',
           icon: 'fa-plus',
         },
