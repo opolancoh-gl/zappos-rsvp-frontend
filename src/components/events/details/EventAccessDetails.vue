@@ -58,7 +58,7 @@ export default {
       tableHeadLinks: [
         {
           name: 'Edit',
-          routeName: 'EventCreate',
+          routeName: 'EventAccessUpdate',
           class: '',
           icon: 'svg-inline--fa fa-edit fa-w-18 mr-1',
         },

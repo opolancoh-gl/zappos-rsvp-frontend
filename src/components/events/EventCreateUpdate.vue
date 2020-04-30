@@ -308,7 +308,7 @@ export default {
         .dispatch('event/createOrUpdateItem', item)
         .then((data) => {
           this.$router.push({
-            name: 'EventDetails',
+            name: 'EventOverview',
             params: { id: data.id, actionMessage: `Event successfully ${keyMessage}!` },
           });
         })

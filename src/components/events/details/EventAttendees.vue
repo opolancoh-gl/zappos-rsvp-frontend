@@ -70,10 +70,12 @@
                       <router-link
                         :to="{
                           name: 'ViewAttendee',
-                          id: attendee.id,
+                          params: {
+                            attendeeID: attendee.id,
+                          },
                         }"
                         :data-link="
-                          `/viewattendee/${attendee.organization.id}`
+                          `/viewattendee/${attendee.id}`
                         "
                       >
                         {{ attendee.name }}
@@ -97,7 +99,8 @@
                 <div class="col align-self-center"></div>
                 <div class="col-1 align-self-center">
                   <div class="fa-2x text-muted">
-                    <i class="fas fa-sms"></i>
+                    <i class="fas fa-sms" v-if="attendee.phone"></i>
+                    <i class="fas fa-envelope" v-if="!attendee.phone && attendee.email"></i>
                   </div>
                 </div>
                 <div class="col align-self-center">
@@ -217,12 +220,16 @@ export default {
   methods: {
     getPersonStatus(attendee) {
       let res = 'person-complete';
-      switch (attendee.status) {
-        case 'invite_not_sent':
-          res = 'person-incomplete';
-          break;
-        default:
-          break;
+      if (attendee.phone) {
+        res = 'person-missing-phone';
+      } else {
+        switch (attendee.status) {
+          case 'invite_not_sent':
+            res = 'person-incomplete';
+            break;
+          default:
+            break;
+        }
       }
       return res;
     },
@@ -237,7 +244,6 @@ export default {
         confirmButtonText: 'Yes, delete it!',
       });
       if (result.value) {
-        console.log('yes');
         await this.deleteAttendee(attendee);
         await this.fetchAttendees();
         Swal.fire(
