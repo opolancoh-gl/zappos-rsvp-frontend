@@ -6,14 +6,10 @@ import { DataProvider as BaseDataProvider, baseCrudGenerator } from './data-prov
 
 function prepareDataProvider(dataActionsContainer) {
   const baseCrud = baseCrudGenerator(dataActionsContainer);
-  Object.keys(baseCrud).reduce(
-    (baseClass, methodName) => {
-      baseClass.prototype[methodName] =
-      baseCrud[methodName];
-      return baseClass;
-    },
-    BaseDataProvider,
-  );
+  Object.keys(baseCrud).reduce((baseClass, methodName) => {
+    baseClass.prototype[methodName] = baseCrud[methodName];
+    return baseClass;
+  }, BaseDataProvider);
 }
 
 prepareDataProvider(UserDataActions);

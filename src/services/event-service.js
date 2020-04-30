@@ -1,4 +1,4 @@
-import http from './http-service';
+import http from './http-api-service';
 
 const resourceName = 'events';
 
