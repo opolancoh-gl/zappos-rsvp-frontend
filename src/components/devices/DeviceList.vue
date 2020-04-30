@@ -31,6 +31,7 @@
         </div>
       </div>
     </div>
+    <FileUploader />
   </div>
 </template>
 
@@ -38,10 +39,11 @@
 import { mapState, mapActions } from 'vuex';
 import TableHead from '@/components/_ui/TableHead.vue';
 import TableBodyNoData from '@/components/_ui/TableBodyNoData.vue';
+import FileUploader from '@/components/AwsFileUploader.vue';
 
 export default {
   name: 'DeviceList',
-  components: { TableHead, TableBodyNoData },
+  components: { TableHead, TableBodyNoData, FileUploader },
   data() {
     return {
       title: 'Devices',
