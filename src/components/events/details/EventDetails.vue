@@ -8,13 +8,13 @@ import { mapState, mapActions } from 'vuex';
 export default {
   name: 'EventDetails',
   props: {
-    id: { type: [String, Number] },
+    id: { type: String, required: true },
   },
   created() {
-    console.log('EventDetails created');
+    console.log(`EventDetails created. Id '${this.id}'`);
   },
   mounted() {
-    console.log('EventDetails mounted');
+    console.log(`EventDetails mounted. Id '${this.id}'`);
     (async () => {
       try {
         // [_review_] // Define what to do id is invalid or not exists
