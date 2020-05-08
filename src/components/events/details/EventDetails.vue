@@ -10,11 +10,8 @@ export default {
   props: {
     id: { type: String, required: true },
   },
-  created() {
-    console.log(`EventDetails created. Id '${this.id}'`);
-  },
+  created() {},
   mounted() {
-    console.log(`EventDetails mounted. Id '${this.id}'`);
     (async () => {
       try {
         // [_review_] // Define what to do id is invalid or not exists
