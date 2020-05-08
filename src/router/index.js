@@ -21,7 +21,7 @@ import EventOverview from '@/components/events/details/EventOverview.vue';
 import EventAccessList from '@/components/events/details/EventAccessList.vue';
 import EventAccessCreateUpdate from '@/components/events/details/EventAccessCreateUpdate.vue';
 import EventAccessDetails from '@/components/events/details/EventAccessDetails.vue';
-import EventMessageCenter from '@/components/events/details/message-center/DetailsMessageCenter.vue';
+import EventMessageCenterUpdate from '@/components/events/details/EventMessageCenterUpdate.vue';
 import EventAttendees from '@/components/events/details/EventAttendees.vue';
 import EventBlastCenter from '@/components/events/details/EventBlastCenter.vue';
 
@@ -234,7 +234,8 @@ const routes = [
       {
         path: 'message-center',
         name: 'EventMessageCenter',
-        component: EventMessageCenter,
+        component: EventMessageCenterUpdate,
+        props: true,
         meta: {
           auth: false,
         },
