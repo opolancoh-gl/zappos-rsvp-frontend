@@ -5,3 +5,7 @@ export function titleCase(str) {
     str[0].toUpperCase() + str.substring(1).toLowerCase()
   );
 }
+
+export default {
+  titleCase,
+};

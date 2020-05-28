@@ -27,6 +27,7 @@ import EventBlastCenter from '@/components/events/details/EventBlastCenter.vue';
 
 import NewAttendee from '@/components/events/details/attendees/NewAttendee.vue';
 import ViewAttendee from '@/components/events/details/attendees/ViewAttendee.vue';
+import NewBlast from '@/components/events/details/blasts/NewBlast.vue';
 
 import { uuidRE } from '@/utils/validation-utils';
 
@@ -39,14 +40,6 @@ const routePaths = {
 };
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: UserList,
-    meta: {
-      auth: true,
-    },
-  },
   // auth
   {
     path: '/signin',
@@ -81,6 +74,14 @@ const routes = [
     },
   },
   // users
+  {
+    path: '/',
+    name: 'Home',
+    component: UserList,
+    meta: {
+      auth: true,
+    },
+  },
   // user - list
   {
     path: `${routePaths.user}`,
@@ -115,7 +116,7 @@ const routes = [
     name: 'UserUpdate',
     component: UserCreateUpdate,
     meta: {
-      auth: false,
+      auth: true,
     },
     props: true,
   },
@@ -135,7 +136,7 @@ const routes = [
     name: 'DeviceCreate',
     component: DeviceCreateUpdate,
     meta: {
-      auth: false,
+      auth: true,
     },
   },
   // device - details
@@ -144,7 +145,7 @@ const routes = [
     name: 'DeviceDetails',
     component: DeviceDetails,
     meta: {
-      auth: false,
+      auth: true,
     },
     props: true,
   },
@@ -154,7 +155,7 @@ const routes = [
     name: 'DeviceUpdate',
     component: DeviceCreateUpdate,
     meta: {
-      auth: false,
+      auth: true,
     },
     props: true,
   },
@@ -165,7 +166,7 @@ const routes = [
     name: 'EventList',
     component: EventList,
     meta: {
-      auth: false,
+      auth: true,
     },
   },
   // event - create
@@ -174,7 +175,7 @@ const routes = [
     name: 'EventCreate',
     component: EventCreateUpdate,
     meta: {
-      auth: false,
+      auth: true,
     },
   },
   // event - details
@@ -183,7 +184,7 @@ const routes = [
     component: EventDetails,
     props: true,
     meta: {
-      auth: false,
+      auth: true,
     },
     children: [
       {
@@ -192,7 +193,7 @@ const routes = [
         component: EventOverview,
         props: true,
         meta: {
-          auth: false,
+          auth: true,
         },
       },
       {
@@ -201,7 +202,7 @@ const routes = [
         component: EventAccessList,
         props: true,
         meta: {
-          auth: false,
+          auth: true,
         },
       },
       {
@@ -210,7 +211,7 @@ const routes = [
         component: EventAccessCreateUpdate,
         props: true,
         meta: {
-          auth: false,
+          auth: true,
         },
       },
       {
@@ -219,7 +220,7 @@ const routes = [
         component: EventAccessCreateUpdate,
         props: true,
         meta: {
-          auth: false,
+          auth: true,
         },
       },
       {
@@ -228,7 +229,7 @@ const routes = [
         component: EventAccessDetails,
         props: true,
         meta: {
-          auth: false,
+          auth: true,
         },
       },
       {
@@ -236,7 +237,7 @@ const routes = [
         name: 'EventMessageCenter',
         component: EventMessageCenter,
         meta: {
-          auth: false,
+          auth: true,
         },
       },
       {
@@ -272,11 +273,19 @@ const routes = [
         },
       },
       {
+        path: 'blast-center/new',
+        name: 'NewBlast',
+        component: NewBlast,
+        meta: {
+          auth: true,
+        },
+      },
+      {
         path: 'blast-center',
         name: 'EventBlastCenter',
         component: EventBlastCenter,
         meta: {
-          auth: false,
+          auth: true,
         },
       },
       {
@@ -284,7 +293,7 @@ const routes = [
         name: 'EventUpdate',
         component: EventCreateUpdate,
         meta: {
-          auth: false,
+          auth: true,
         },
         props: true,
       },
@@ -297,9 +306,12 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ '../views/About.vue'
+      ),
     meta: {
-      auth: false,
+      auth: true,
     },
   },
 ];
@@ -312,26 +324,20 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   const SIGNIN = '/signin';
-  const reqLogin = to.meta && to.meta.auth;
   const loggedIn = await window.$app.isLoggedIn();
-  if (loggedIn && to.query && to.query.next && to.query.next !== to.path) {
-    return next({
-      path: to.query.next,
-    });
+  if (
+    to.matched.some((record) => record.meta.auth) &&
+    !loggedIn
+  ) {
+    return next({ path: `${SIGNIN}?next=${to.path}` });
   }
-  if (to.path === SIGNIN) {
-    return next();
+  if (!to.matched.length && !loggedIn) {
+    return next({ path: SIGNIN });
   }
-  if (!reqLogin) {
-    return next();
-  }
-  if (loggedIn && from.query && from.query.next && from.query.next !== to.path) {
+  if (from.query && from.query.next !== to.path) {
     return next({
       path: from.query.next,
     });
-  }
-  if (!loggedIn) {
-    return next({ path: `${SIGNIN}?next=${to.path}` });
   }
   return next();
 });

@@ -15,6 +15,7 @@ export function getStateManagement(
     dataProviderUpdater,
     dataProviderCreator,
     dataProviderDeleter,
+    actions,
   } = {},
 ) {
   const capitalName = titleCase(resourceName);
@@ -89,6 +90,7 @@ export function getStateManagement(
         );
         return result.data.data;
       },
+      ...(actions || {}),
     },
 
     getters: {

@@ -1,4 +1,5 @@
 import UserDataActions from './user-data-actions';
+import BlastDataActions from './blast-data-actions';
 import AttendeeDataActions from './attendee-data-actions';
 import AccountDataActions from './account-data-actions';
 import OrganizationDataActions from './organization-data-actions';
@@ -17,6 +18,7 @@ function prepareDataProvider(dataActionsContainer) {
 }
 
 prepareDataProvider(UserDataActions);
+prepareDataProvider(BlastDataActions);
 prepareDataProvider(AccountDataActions);
 prepareDataProvider(AttendeeDataActions);
 prepareDataProvider(OrganizationDataActions);

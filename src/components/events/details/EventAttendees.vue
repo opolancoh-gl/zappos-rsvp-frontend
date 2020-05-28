@@ -99,8 +99,16 @@
                 <div class="col align-self-center"></div>
                 <div class="col-1 align-self-center">
                   <div class="fa-2x text-muted">
-                    <i class="fas fa-sms" v-if="attendee.phone"></i>
-                    <i class="fas fa-envelope" v-if="!attendee.phone && attendee.email"></i>
+                    <i
+                      class="fas fa-sms"
+                      v-if="attendee.phone"
+                    ></i>
+                    <i
+                      class="fas fa-envelope"
+                      v-if="
+                        !attendee.phone && attendee.email
+                      "
+                    ></i>
                   </div>
                 </div>
                 <div class="col align-self-center">
@@ -212,10 +220,9 @@ export default {
     }),
   },
   mounted() {
-    /* axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then((response) => (this.info = response)); */
-    this.fetchAttendees();
+    this.fetchAttendees({
+      event_id: this.$route.params.id,
+    });
   },
   methods: {
     getPersonStatus(attendee) {
@@ -245,7 +252,9 @@ export default {
       });
       if (result.value) {
         await this.deleteAttendee(attendee);
-        await this.fetchAttendees();
+        await this.fetchAttendees({
+          event_id: this.$route.params.id,
+        });
         Swal.fire(
           'Deleted!',
           'The element has been deleted.',
@@ -265,12 +274,16 @@ export default {
         confirmButtonText: 'Yes, send it!',
       });
       if (result.value) {
-        console.log('yes');
-        await this.deleteAttendee(attendee);
-        await this.fetchAttendees();
+        await this.sendNotification({
+          attendee,
+          event: this.currentEvent,
+        });
+        await this.fetchAttendees({
+          event_id: this.$route.params.id,
+        });
         Swal.fire(
-          'Deleted!',
-          'The element has been deleted.',
+          'Success!',
+          'The message have been sent.',
           'success',
         );
       }
@@ -279,6 +292,7 @@ export default {
       fetchUsers: 'user/getItemsFromAPI',
       fetchAttendees: 'attendee/getItemsFromAPI',
       deleteAttendee: 'attendee/deleteItem',
+      sendNotification: 'attendee/sendNotification',
     }),
   },
 };

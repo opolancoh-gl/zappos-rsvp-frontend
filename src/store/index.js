@@ -63,8 +63,19 @@ export default new Vuex.Store({
     device,
     event,
     organization: getStateManagement('organizations'),
-    attendee: getStateManagement('attendees'),
+    attendee: getStateManagement('attendees', {
+      actions: {
+        async sendNotification(store, { attendee, event }) {
+          const result = await DataProvider.getInstance().sendInvite(
+            attendee,
+            event,
+          );
+          return result.data.data;
+        },
+      },
+    }),
     account: getStateManagement('accounts'),
+    blast: getStateManagement('blasts'),
     user: getStateManagement('users'),
     eventUser,
   },

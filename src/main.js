@@ -1,6 +1,7 @@
 import './utils/bootstraping';
 
 import 'bootstrap/dist/css/bootstrap-reboot.min.css';
+import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -8,7 +9,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 
 import Vue from 'vue';
-import Vuelidate from 'vuelidate'
+import Vuelidate from 'vuelidate';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
@@ -32,6 +33,7 @@ Vue.prototype.$_app = $appUtils;
 Vue.prototype.$_textUtils = $textUtils;
 
 Vue.use(Vuelidate);
+window.jQuery = $;
 
 new Vue({
   router,
