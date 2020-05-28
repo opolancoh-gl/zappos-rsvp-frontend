@@ -1,4 +1,4 @@
-import http from './http-service';
+import http from './http-api-service';
 
 const resourceName = 'events';
 
@@ -29,5 +29,11 @@ export default {
   },
   createUser(id, item) {
     return http.post(`/${resourceName}/${id}/users/new`, item);
+  },
+  getMessage(id) {
+    return http.get(`/${resourceName}/${id}/message-center`);
+  },
+  updateMessage(id, item) {
+    return http.put(`/${resourceName}/${id}/message-center`, item);
   },
 };
