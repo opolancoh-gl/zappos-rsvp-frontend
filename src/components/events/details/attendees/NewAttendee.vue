@@ -358,7 +358,7 @@ export default {
       }
       // */
     },
-    async updateGuests(){
+    async updateGuests() {
       if (this.attendeeGuestInfo.noGuest) {
         // REMOVE ATTENDEE GUESTS
       }

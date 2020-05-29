@@ -6,6 +6,9 @@ import SignIn from '@/components/auth/SignInPage.vue';
 import PasswordRecovery from '@/components/auth/PasswordRecoveryPage.vue';
 import SignUp from '@/components/auth/SignUp.vue';
 // users
+import Accounts from '@/components/Accounts.vue';
+import Organizations from '@/components/Organizations.vue';
+// users
 import UserList from '@/components/users/UserList.vue';
 import UserDetails from '@/components/users/UserDetails.vue';
 import UserCreateUpdate from '@/components/users/UserCreateUpdate.vue';
@@ -35,6 +38,8 @@ Vue.use(VueRouter);
 
 const routePaths = {
   user: '/users',
+  accounts: '/accounts',
+  organizations: '/organizations',
   device: '/devices',
   event: '/events',
 };
@@ -78,6 +83,24 @@ const routes = [
     path: '/',
     name: 'Home',
     component: UserList,
+    meta: {
+      auth: true,
+    },
+  },
+  // accounts
+  {
+    path: `${routePaths.accounts}/:id?`,
+    name: 'AccountsList',
+    component: Accounts,
+    meta: {
+      auth: true,
+    },
+  },
+  // organizations
+  {
+    path: `${routePaths.organizations}/:id?`,
+    name: 'OrganizationsList',
+    component: Organizations,
     meta: {
       auth: true,
     },

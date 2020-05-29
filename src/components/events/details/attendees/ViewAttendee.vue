@@ -20,7 +20,7 @@
           :src="attendee.qr"
         />
         <div class="mt-2 d-flex justify-content-center">
-          Ticket Not Generated Yet (WORK IN PROGRESS)
+          Ticket Information
         </div>
       </div>
     </div>
@@ -120,7 +120,7 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#0062cc',
         cancelButtonColor: '#b2b3b3',
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Yes, send it!',
       });
       if (result.value) {
         console.log('TODO: SEND EMAIL');
